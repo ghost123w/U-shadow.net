@@ -1,0 +1,37 @@
+[Mon Mar 30 14:50:00 2026] PHP 8.3.6 Development Server (http://localhost:8080) started
+[Mon Mar 30 14:50:02 2026] [::1]:43616 Accepted
+[Mon Mar 30 14:50:02 2026] [::1]:43616 [200]: GET /index.php
+[Mon Mar 30 14:50:02 2026] [::1]:43616 Closing
+[Mon Mar 30 14:50:02 2026] [::1]:43630 Accepted
+[Mon Mar 30 14:50:02 2026] [::1]:43630 [200]: GET /style.css
+[Mon Mar 30 14:50:02 2026] [::1]:43630 Closing
+[Mon Mar 30 14:50:04 2026] [::1]:43634 Accepted
+[Mon Mar 30 14:50:04 2026] [::1]:43634 [302]: POST /index.php
+[Mon Mar 30 14:50:04 2026] [::1]:43634 Closing
+[Mon Mar 30 14:50:04 2026] [::1]:43644 Accepted
+[Mon Mar 30 14:50:04 2026] [::1]:43644 [200]: GET /dashboard.php
+[Mon Mar 30 14:50:04 2026] [::1]:43644 Closing
+[Mon Mar 30 14:50:04 2026] [::1]:43652 Accepted
+[Mon Mar 30 14:50:04 2026] [::1]:43652 [200]: GET /style.css
+[Mon Mar 30 14:50:04 2026] [::1]:43652 Closing
+[Mon Mar 30 14:50:05 2026] [::1]:51244 Accepted
+[Mon Mar 30 14:50:05 2026] [::1]:51244 [302]: GET /tiktok.php?user=secure_user
+[Mon Mar 30 14:50:05 2026] [::1]:51244 Closing
+[Mon Mar 30 14:50:09 2026] [::1]:51246 Accepted
+[Mon Mar 30 14:50:09 2026] [::1]:51246 [200]: GET /dashboard.php
+[Mon Mar 30 14:50:09 2026] [::1]:51246 Closing
+[Mon Mar 30 14:50:09 2026] [::1]:51254 Accepted
+[Mon Mar 30 14:50:09 2026] [::1]:51254 [200]: GET /style.css
+[Mon Mar 30 14:50:09 2026] [::1]:51254 Closing
+[Mon Mar 30 14:50:10 2026] [::1]:51264 Accepted
+[Mon Mar 30 14:50:10 2026] [::1]:51264 [200]: GET /admin.php
+[Mon Mar 30 14:50:10 2026] [::1]:51264 Closing
+[Mon Mar 30 14:50:10 2026] [::1]:51266 Accepted
+[Mon Mar 30 14:50:10 2026] [::1]:51266 [302]: POST /admin.php
+[Mon Mar 30 14:50:10 2026] [::1]:51266 Closing
+[Mon Mar 30 14:50:10 2026] [::1]:51268 Accepted
+[Mon Mar 30 14:50:10 2026] [::1]:51268 [200]: GET /admin_categories.php
+[Mon Mar 30 14:50:10 2026] [::1]:51268 Closing
+[Mon Mar 30 14:50:10 2026] [::1]:51282 Accepted
+[Mon Mar 30 14:50:10 2026] [::1]:51282 [200]: GET /style.css
+[Mon Mar 30 14:50:10 2026] [::1]:51282 Closing
