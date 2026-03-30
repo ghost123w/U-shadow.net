@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($authenticated) {
-        header('Location: admin_categories.php');
+        header('Location: admin_dashboard.php');
         exit;
     } else {
         $error = 'Invalid admin credentials';
