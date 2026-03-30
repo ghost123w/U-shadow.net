@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Username already exists';
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $users[] = ['username' => $username, 'password' => $hashed_password];
+        $users[] = ['username' => $username, 'password' => $hashed_password, 'is_admin' => false];
         file_put_contents('users.json', json_encode($users));
         header('Location: index.php');
         exit;
