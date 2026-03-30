@@ -12,8 +12,8 @@ define('ANALYTICS_FILE', DATA_DIR . 'analytics.json');
 header("X-Frame-Options: SAMEORIGIN");
 header("X-Content-Type-Options: nosniff");
 header("X-XSS-Protection: 1; mode=block");
-// Simplified CSP to allow our styles and internal assets
-header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';");
+// Security Headers
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://cdnjs.cloudflare.com;");
 
 /**
  * Generate a CSRF token if one doesn't exist.

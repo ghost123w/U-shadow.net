@@ -19,22 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($new_cat && preg_match('/^[a-zA-Z0-9 ]+$/', $new_cat)) {
         $categories = json_decode(file_get_contents(CATEGORIES_FILE), true);
         if (!in_array($new_cat, $categories)) {
-            // Filename must be strictly alphanumeric for safety
-            $safe_filename = strtolower(str_replace(' ', '', $new_cat)) . '.php';
-
-            // Final path-traversal check just in case, though preg_match handles it
-            if (strpos($safe_filename, '..') !== false || strpos($safe_filename, '/') !== false) {
-                 $error = "Invalid hub name format.";
-            } else {
-                $categories[] = $new_cat;
-                file_put_contents(CATEGORIES_FILE, json_encode($categories));
-
-                // Create the template file for the new category
-                if (!file_exists($safe_filename)) {
-                    copy(__DIR__ . '/../template.php', $safe_filename);
-                }
-                $success = "Link Hub for '$new_cat' added successfully!";
-            }
+            $categories[] = $new_cat;
+            file_put_contents(CATEGORIES_FILE, json_encode($categories));
+            $success = "Link Hub for '$new_cat' added successfully!";
         } else {
             $error = "Hub already exists.";
         }
@@ -122,7 +109,7 @@ $csrf_token = generate_csrf_token();
                     <?php foreach ($categories as $cat): ?>
                     <tr>
                         <td style="font-weight: 600;"><?php echo s($cat); ?></td>
-                        <td><code><?php echo s(strtolower($cat)); ?>.php</code></td>
+                        <td><code>hub.php?cat=<?php echo s(str_replace(' ', '', strtolower($cat))); ?></code></td>
                         <td><span class="badge badge-success">ACTIVE</span></td>
                     </tr>
                     <?php endforeach; ?>

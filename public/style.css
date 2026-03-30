@@ -295,6 +295,22 @@ body {
     font-size: 12px;
 }
 
+.btn-preview {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.btn-preview:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
 /* Utilities */
 .text-primary { color: var(--primary); }
 
@@ -413,12 +429,13 @@ body {
     color: #fff;
     text-align: left;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Ensure left alignment */
 }
 
 .hero-container {
     max-width: 1200px;
     width: 100%;
+    margin-left: 5%; /* Slight offset from the absolute edge for better aesthetics */
 }
 
 .hero-content {

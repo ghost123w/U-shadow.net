@@ -126,25 +126,39 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
                         'tiktok' => 'fa-brands fa-tiktok',
                         'snapchat' => 'fa-brands fa-snapchat',
                         'telegram' => 'fa-brands fa-telegram',
-                        'discord' => 'fa-brands fa-discord'
+                        'discord' => 'fa-brands fa-discord',
+                        'twitter' => 'fa-brands fa-twitter',
+                        'x' => 'fa-brands fa-x-twitter',
+                        'youtube' => 'fa-brands fa-youtube',
+                        'pinterest' => 'fa-brands fa-pinterest',
+                        'linkedin' => 'fa-brands fa-linkedin',
+                        'whatsapp' => 'fa-brands fa-whatsapp',
+                        'slack' => 'fa-brands fa-slack',
+                        'twitch' => 'fa-brands fa-twitch',
+                        'spotify' => 'fa-brands fa-spotify'
                     ];
                     foreach ($categories as $cat):
-                        $cat_lower = strtolower($cat);
-                        $icon_class = $icons[$cat_lower] ?? 'fa-solid fa-link';
-                        $generated_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/" . $cat_lower . ".php?user=" . urlencode($user['username']);
+                        $cat_clean = str_replace(' ', '', strtolower($cat));
+                        $icon_class = $icons[$cat_clean] ?? 'fa-solid fa-link';
+                        $generated_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/hub.php?cat=" . $cat_clean . "&user=" . urlencode($user['username']);
                     ?>
                         <div class="link-item">
                             <div class="platform">
                                 <i class="<?php echo $icon_class; ?>"></i>
-                                <span><?php echo s($cat); ?> Integration</span>
+                                <span><?php echo s($cat); ?> Hub</span>
                             </div>
                             <div class="copy-box">
-                                <input type="text" value="<?php echo s($generated_link); ?>" id="link-<?php echo $cat_lower; ?>" readonly>
-                                <button onclick="copyLink('link-<?php echo $cat_lower; ?>')">COPY</button>
+                                <input type="text" value="<?php echo s($generated_link); ?>" id="link-<?php echo $cat_clean; ?>" readonly>
+                                <button onclick="copyLink('link-<?php echo $cat_clean; ?>')">COPY</button>
                             </div>
-                            <div style="margin-top: 15px; font-size: 11px; color: var(--gray); display: flex; justify-content: space-between;">
-                                <span>Total: <?php echo $cat_stats[$cat_lower] ?? 0; ?> clicks</span>
-                                <span><i class="fa-solid fa-shield-halved"></i> Active</span>
+                            <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 11px; color: var(--gray);">
+                                    <span>Total: <?php echo $cat_stats[$cat_clean] ?? 0; ?> clicks</span><br>
+                                    <span><i class="fa-solid fa-shield-halved"></i> Active</span>
+                                </div>
+                                <a href="<?php echo s($generated_link); ?>" target="_blank" class="btn-preview" title="Preview your hub">
+                                    <i class="fa-solid fa-up-right-from-square"></i> PREVIEW
+                                </a>
                             </div>
                         </div>
                     <?php endforeach; ?>
