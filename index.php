@@ -1,10 +1,37 @@
+<?php
+session_start();
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    $users = json_decode(file_get_contents('users.json'), true);
+    $authenticated = false;
+
+    foreach ($users as $user) {
+        if ($user['username'] === $username && password_verify($password, $user['password'])) {
+            $_SESSION['user'] = $user;
+            $authenticated = true;
+            break;
+        }
+    }
+
+    if ($authenticated) {
+        header('Location: dashboard.php');
+        exit;
+    } else {
+        $error = 'Invalid username or password';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-shadow | Smikta v2.3</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 </head>
 <body>
 
@@ -19,8 +46,8 @@
 
 <nav>
     <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/signup">Sign Up</a></li>
+        <li><a href="index.php">Home</a></li>
+        <li><a href="signup.php">Sign Up</a></li>
         <li><a href="#">Short Your Link</a></li>
         <li><a href="#">Facebook</a></li>
         <li><a href="#">Contact</a></li>
@@ -32,21 +59,21 @@
     <div class="login-panel">
         <div class="panel-header">Login Panel</div>
         <div class="panel-body">
-            <% if (error) { %>
-                <p class="error"><%= error %></p>
-            <% } %>
-            <% if (user) { %>
-                <p>Logged in as: <%= user.username %></p>
-                <a href="/dashboard"><button>Go to Dashboard</button></a>
-                <a href="/logout"><button>Logout</button></a>
-            <% } else { %>
-                <form action="/login" method="POST">
+            <?php if ($error): ?>
+                <p class="error"><?php echo htmlspecialchars($error); ?></p>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['user'])): ?>
+                <p>Logged in as: <?php echo htmlspecialchars($_SESSION['user']['username']); ?></p>
+                <a href="dashboard.php"><button>Go to Dashboard</button></a>
+                <a href="logout.php"><button>Logout</button></a>
+            <?php else: ?>
+                <form action="index.php" method="POST">
                     <input type="text" name="username" placeholder="Username" required>
                     <input type="password" name="password" placeholder="Password" required>
                     <button type="submit">Sign In</button>
                 </form>
                 <p style="font-size: 10px; text-align: center;"><a href="#">Forgot Password?</a></p>
-            <% } %>
+            <?php endif; ?>
         </div>
         <div style="text-align: center; font-size: 30px; font-weight: bold; color: #ff0000; padding: 20px;">ADS</div>
     </div>
@@ -56,7 +83,7 @@
         <div class="panel-body" style="text-align: center;">
             <p>Sorry You Must Be Member To See Your Victimes</p>
             <p>Sign Up for Get Your Professional Scamas</p>
-            <p><a href="/signup">Sign Up Here</a></p>
+            <p><a href="signup.php">Sign Up Here</a></p>
         </div>
     </div>
 </div>

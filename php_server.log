@@ -1,0 +1,31 @@
+[Mon Mar 30 13:57:32 2026] PHP 8.3.6 Development Server (http://localhost:8000) started
+[Mon Mar 30 13:57:35 2026] [::1]:55630 Accepted
+[Mon Mar 30 13:57:35 2026] [::1]:55630 [200]: GET /index.php
+[Mon Mar 30 13:57:35 2026] [::1]:55630 Closing
+[Mon Mar 30 13:57:35 2026] [::1]:55644 Accepted
+[Mon Mar 30 13:57:35 2026] [::1]:55644 [200]: GET /public/css/style.css
+[Mon Mar 30 13:57:35 2026] [::1]:55644 Closing
+[Mon Mar 30 13:57:36 2026] [::1]:55658 Accepted
+[Mon Mar 30 13:57:36 2026] [::1]:55658 [200]: GET /signup.php
+[Mon Mar 30 13:57:36 2026] [::1]:55658 Closing
+[Mon Mar 30 13:57:36 2026] [::1]:55674 Accepted
+[Mon Mar 30 13:57:36 2026] [::1]:55674 [200]: GET /public/css/style.css
+[Mon Mar 30 13:57:36 2026] [::1]:55674 Closing
+[Mon Mar 30 13:57:38 2026] [::1]:55684 Accepted
+[Mon Mar 30 13:57:38 2026] [::1]:55684 [302]: POST /signup.php
+[Mon Mar 30 13:57:38 2026] [::1]:55684 Closing
+[Mon Mar 30 13:57:38 2026] [::1]:55692 Accepted
+[Mon Mar 30 13:57:38 2026] [::1]:55692 [200]: GET /index.php
+[Mon Mar 30 13:57:38 2026] [::1]:55692 Closing
+[Mon Mar 30 13:57:38 2026] [::1]:55702 Accepted
+[Mon Mar 30 13:57:38 2026] [::1]:55702 [200]: GET /public/css/style.css
+[Mon Mar 30 13:57:38 2026] [::1]:55702 Closing
+[Mon Mar 30 13:57:40 2026] [::1]:55706 Accepted
+[Mon Mar 30 13:57:41 2026] [::1]:55706 [302]: POST /index.php
+[Mon Mar 30 13:57:41 2026] [::1]:55706 Closing
+[Mon Mar 30 13:57:41 2026] [::1]:55722 Accepted
+[Mon Mar 30 13:57:41 2026] [::1]:55722 [200]: GET /dashboard.php
+[Mon Mar 30 13:57:41 2026] [::1]:55722 Closing
+[Mon Mar 30 13:57:41 2026] [::1]:55736 Accepted
+[Mon Mar 30 13:57:41 2026] [::1]:55736 [200]: GET /public/css/style.css
+[Mon Mar 30 13:57:41 2026] [::1]:55736 Closing
