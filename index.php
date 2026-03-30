@@ -56,6 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </nav>
 
 <div class="main-container">
+    <div class="side-branding">
+        <div class="logo-large">U-SHADOW</div>
+        <p>Premium Pitching Solutions</p>
+    </div>
+
     <div class="login-panel">
         <div class="panel-header">Login Panel</div>
         <div class="panel-body">

@@ -77,8 +77,28 @@ nav ul li a {
     padding: 20px;
 }
 
-.login-panel {
+.side-branding {
     flex: 1;
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.logo-large {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background-color: #fff;
+    color: #333;
+    padding: 20px;
+    display: inline-block;
+}
+
+.login-panel {
+    flex: 1.5;
     background-color: #fff;
     border: 1px solid #ccc;
 }
@@ -109,7 +129,7 @@ nav ul li a {
 }
 
 .victimes-control {
-    flex: 3;
+    flex: 2;
     background-color: #fff;
     border: 1px solid #ccc;
 }
