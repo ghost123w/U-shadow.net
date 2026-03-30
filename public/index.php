@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config.php';
 $error = '';
+$signup_success = isset($_GET['signup']) && $_GET['signup'] === 'success';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
@@ -59,11 +60,17 @@ $csrf_token = generate_csrf_token();
     <div class="side-branding">
         <div class="logo-large">U-SHADOW</div>
         <p>Professional Link Management & Analytics</p>
+        <p style="font-size: 14px; margin-top: 20px;">
+            Empowering your social presence with tracked, branded integration hubs. Join thousands of users optimizing their link click-through rates.
+        </p>
     </div>
 
     <div class="login-panel">
         <div class="panel-header">User Login</div>
         <div class="panel-body">
+            <?php if ($signup_success): ?>
+                <p style="color: green; text-align: center; font-weight: bold; margin-bottom: 15px;">Account created! Please sign in.</p>
+            <?php endif; ?>
             <?php if ($error): ?>
                 <p class="error"><?php echo s($error); ?></p>
             <?php endif; ?>
@@ -84,23 +91,46 @@ $csrf_token = generate_csrf_token();
             <?php endif; ?>
         </div>
     </div>
+</div>
 
+<div class="main-container" style="margin-top: 0;">
     <div class="info-section">
-        <div class="panel-header">.: About U-shadow :.</div>
+        <div class="panel-header">.: Why Choose U-shadow? :.</div>
         <div class="panel-body">
-            <p>U-shadow is a professional platform for managing your social media integration links. Track clicks, analyze traffic, and optimize your online presence.</p>
-            <ul>
-                <li>Custom Integration Links</li>
-                <li>Real-time Click Analytics</li>
-                <li>Professional Dashboard</li>
-                <li>Secure & Private</li>
-            </ul>
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <h4>Real-time Analytics</h4>
+                    <p>Monitor every click with precision. See when and where your audience is coming from.</p>
+                </div>
+                <div style="flex: 1;">
+                    <h4>Branded Links</h4>
+                    <p>Create professional landing pages for all major social platforms: Facebook, Instagram, TikTok, and more.</p>
+                </div>
+                <div style="flex: 1;">
+                    <h4>Secure Infrastructure</h4>
+                    <p>Your data and privacy are our top priorities. We use industry-standard encryption for all user accounts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container" style="margin-top: 0;">
+    <div class="info-section" style="flex: 1;">
+        <div class="panel-header">.: How it Works :.</div>
+        <div class="panel-body" style="text-align: center;">
+            <p>1. Sign up for a free account. <br>
+               2. Choose from our professional integration hub templates. <br>
+               3. Generate and share your unique tracking link. <br>
+               4. View detailed click reports in your private dashboard.</p>
         </div>
     </div>
 </div>
 
 <div class="footer">
     Copyright 2010-2025 | Developed By K24KDX <br>
+    <a href="terms.php" style="color: #888; text-decoration: none;">Terms of Service</a> |
+    <a href="privacy.php" style="color: #888; text-decoration: none;">Privacy Policy</a> |
     U-shadow v3.0 | <a href="admin.php" style="color: #888; text-decoration: none;">Admin Access</a>
 </div>
 
