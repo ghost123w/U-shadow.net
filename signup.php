@@ -1,5 +1,15 @@
 <?php
 require_once __DIR__ . '/config.php';
+
+if (isset($_SESSION['user'])) {
+    if ($_SESSION['user']['is_admin'] ?? false) {
+        header('Location: /admin/index.php');
+    } else {
+        header('Location: dashboard.php');
+    }
+    exit;
+}
+
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

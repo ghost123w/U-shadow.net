@@ -5,6 +5,15 @@ $success = '';
 
 $users = json_decode(file_get_contents(USERS_FILE), true);
 
+// Check if any admin exists
+$admin_exists = false;
+foreach ($users as $user) {
+    if ($user['is_admin'] ?? false) {
+        $admin_exists = true;
+        break;
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         die('Invalid CSRF token');
@@ -24,6 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($authenticated) {
+        header('Location: /admin/index.php');
+        exit;
+    } elseif (!$admin_exists) {
+        // Auto-create first admin if none exist
+        $users[] = [
+            'username' => $username,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'is_admin' => true
+        ];
+        file_put_contents(USERS_FILE, json_encode($users));
+        $_SESSION['user'] = end($users);
         header('Location: /admin/index.php');
         exit;
     } else {
@@ -47,7 +67,7 @@ $csrf_token = generate_csrf_token();
 <div class="auth-card">
     <div class="auth-header">
         <h1>Admin Portal</h1>
-        <p>Restricted Access Area</p>
+        <p><?php echo $admin_exists ? 'Restricted Access Area' : 'System Installation: Create Admin'; ?></p>
     </div>
     <div class="auth-content">
         <?php if ($error): ?>
@@ -67,7 +87,9 @@ $csrf_token = generate_csrf_token();
                 <label>Admin Password</label>
                 <input type="password" name="password" placeholder="Password" required>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">Access Control</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">
+                <?php echo $admin_exists ? 'Access Control' : 'Initialize Platform'; ?>
+            </button>
         </form>
     </div>
     <div class="auth-footer">
