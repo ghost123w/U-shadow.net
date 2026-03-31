@@ -72,7 +72,7 @@ $csrf_token = generate_csrf_token();
     <div class="auth-header">
         <h1>Admin Portal</h1>
         <?php if (!$has_admin): ?>
-            <p>Setup First Administrator Account</p>
+            <p style="color: var(--primary); font-weight: 700;"><i class="fas fa-tools"></i> Installation: Setup First Administrator Account</p>
         <?php else: ?>
             <p>Restricted Access Area</p>
         <?php endif; ?>

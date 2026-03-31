@@ -103,13 +103,13 @@ $csrf_token = generate_csrf_token();
 <section class="features-grid">
     <div class="feature-card">
         <i class="fas fa-chart-line"></i>
-        <h3>Real-time Analytics</h3>
-        <p>Monitor every click with precision. See when and where your audience is coming from with our advanced tracking system.</p>
+        <h3>Advanced Tracking</h3>
+        <p>Monitor your performance with precision. See exactly when and how your audience interacts with your generated links.</p>
     </div>
     <div class="feature-card">
-        <i class="fas fa-link"></i>
-        <h3>Branded Link Hubs</h3>
-        <p>Create professional landing pages for Facebook, Instagram, TikTok, and more to centralize your social presence.</p>
+        <i class="fas fa-bolt"></i>
+        <h3>Dynamic Redirection</h3>
+        <p>Fast, reliable, and intelligent link redirection ensuring your visitors always reach their destination seamlessly.</p>
     </div>
     <div class="feature-card">
         <i class="fas fa-shield-alt"></i>
