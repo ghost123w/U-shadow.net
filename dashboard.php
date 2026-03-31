@@ -52,6 +52,9 @@ foreach ($user_analytics as $click) {
     <nav class="navbar-old">
         <ul>
             <li><a href="dashboard.php"><i class="fas fa-home"></i> Home</a></li>
+            <?php if ($user['is_admin'] ?? false): ?>
+                <li><a href="/admin/index.php"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+            <?php endif; ?>
             <li><a href="signup.php" style="display: none;"><i class="fas fa-user-plus"></i> Sign Up</a></li>
             <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>
             <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
