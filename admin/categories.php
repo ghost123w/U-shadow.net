@@ -13,54 +13,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('Invalid CSRF token');
     }
 
-    $new_cat_name = trim($_POST['category'] ?? '');
+    $action = $_POST['action'] ?? 'create';
+    $categories = json_decode(file_get_contents(CATEGORIES_FILE), true);
 
-    // Validate: only alphanumeric and space (for display), and not empty
-    if ($new_cat_name && preg_match('/^[a-zA-Z0-9 ]+$/', $new_cat_name)) {
-        $categories = json_decode(file_get_contents(CATEGORIES_FILE), true);
+    if ($action === 'create') {
+        $new_cat_name = trim($_POST['category'] ?? '');
+        if ($new_cat_name && preg_match('/^[a-zA-Z0-9 ]+$/', $new_cat_name)) {
+            $exists = false;
+            foreach ($categories as $cat) {
+                $c_name = is_array($cat) ? ($cat['name'] ?? '') : $cat;
+                if (strcasecmp($c_name, $new_cat_name) === 0) {
+                    $exists = true;
+                    break;
+                }
+            }
 
-        $exists = false;
-        foreach ($categories as $cat) {
+            if (!$exists) {
+                $image_path = '';
+                if (isset($_FILES['hub_image']) && $_FILES['hub_image']['error'] === UPLOAD_ERR_OK) {
+                    $file_tmp = $_FILES['hub_image']['tmp_name'];
+                    $file_ext = strtolower(pathinfo($_FILES['hub_image']['name'], PATHINFO_EXTENSION));
+                    if (in_array($file_ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                        $new_file_name = uniqid('hub_', true) . '.' . $file_ext;
+                        if (move_uploaded_file($file_tmp, UPLOADS_DIR . $new_file_name)) {
+                            $image_path = '/uploads/' . $new_file_name;
+                        }
+                    }
+                }
+                $categories[] = ['name' => $new_cat_name, 'image' => $image_path];
+                file_put_contents(CATEGORIES_FILE, json_encode($categories));
+                $success = "Logo Hub added successfully!";
+            } else { $error = "Hub already exists."; }
+        } else { $error = "Invalid characters in hub name."; }
+    }
+    elseif ($action === 'edit') {
+        $old_name = $_POST['old_name'] ?? '';
+        $new_name = trim($_POST['category'] ?? '');
+        $found_index = -1;
+        foreach ($categories as $idx => $cat) {
             $c_name = is_array($cat) ? ($cat['name'] ?? '') : $cat;
-            if (strcasecmp($c_name, $new_cat_name) === 0) {
-                $exists = true;
+            if ($c_name === $old_name) {
+                $found_index = $idx;
                 break;
             }
         }
 
-        if (!$exists) {
-            $image_path = '';
+        if ($found_index !== -1 && $new_name && preg_match('/^[a-zA-Z0-9 ]+$/', $new_name)) {
+            if (!is_array($categories[$found_index])) {
+                $categories[$found_index] = ['name' => $categories[$found_index], 'image' => ''];
+            }
+            $categories[$found_index]['name'] = $new_name;
+
             if (isset($_FILES['hub_image']) && $_FILES['hub_image']['error'] === UPLOAD_ERR_OK) {
                 $file_tmp = $_FILES['hub_image']['tmp_name'];
-                $file_name = $_FILES['hub_image']['name'];
-                $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-                $allowed_exts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-
-                if (in_array($file_ext, $allowed_exts)) {
+                $file_ext = strtolower(pathinfo($_FILES['hub_image']['name'], PATHINFO_EXTENSION));
+                if (in_array($file_ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                    // Delete old image if exists
+                    if ($categories[$found_index]['image']) {
+                        @unlink(__DIR__ . '/..' . $categories[$found_index]['image']);
+                    }
                     $new_file_name = uniqid('hub_', true) . '.' . $file_ext;
                     if (move_uploaded_file($file_tmp, UPLOADS_DIR . $new_file_name)) {
-                        $image_path = '/uploads/' . $new_file_name;
-                    } else {
-                        $error = "Failed to move uploaded file.";
+                        $categories[$found_index]['image'] = '/uploads/' . $new_file_name;
                     }
-                } else {
-                    $error = "Invalid file type. Allowed: " . implode(', ', $allowed_exts);
                 }
             }
-
-            if (!$error) {
-                $categories[] = [
-                    'name' => $new_cat_name,
-                    'image' => $image_path
-                ];
-                file_put_contents(CATEGORIES_FILE, json_encode($categories));
-                $success = "Link Hub for '$new_cat_name' added successfully!";
+            file_put_contents(CATEGORIES_FILE, json_encode($categories));
+            $success = "Logo Hub updated successfully!";
+        } else { $error = "Failed to update hub."; }
+    }
+    elseif ($action === 'delete') {
+        $del_name = $_POST['hub_name'] ?? '';
+        $new_categories = [];
+        foreach ($categories as $cat) {
+            $c_name = is_array($cat) ? ($cat['name'] ?? '') : $cat;
+            if ($c_name === $del_name) {
+                if (is_array($cat) && $cat['image']) {
+                    @unlink(__DIR__ . '/..' . $cat['image']);
+                }
+                continue;
             }
-        } else {
-            $error = "Hub already exists.";
+            $new_categories[] = $cat;
         }
-    } else if ($new_cat_name) {
-        $error = "Invalid characters in hub name. Use letters and numbers only.";
+        file_put_contents(CATEGORIES_FILE, json_encode($new_categories));
+        $success = "Logo Hub deleted successfully!";
     }
 }
 
@@ -73,6 +109,17 @@ foreach ($categories_raw as $cat) {
         $categories[] = ['name' => $cat, 'image' => ''];
     }
 }
+
+$edit_hub = null;
+if (isset($_GET['edit'])) {
+    foreach ($categories as $cat) {
+        if ($cat['name'] === $_GET['edit']) {
+            $edit_hub = $cat;
+            break;
+        }
+    }
+}
+
 $csrf_token = generate_csrf_token();
 ?>
 <!DOCTYPE html>
@@ -114,6 +161,33 @@ $csrf_token = generate_csrf_token();
         </div>
     </div>
 
+    <?php if ($edit_hub): ?>
+    <section class="section" style="max-width: 600px; margin-bottom: 40px; border: 2px solid var(--primary);">
+        <div class="section-header">
+            <h2><i class="fas fa-edit"></i> Edit Logo Hub: <?php echo s($edit_hub['name']); ?></h2>
+            <a href="/admin/categories.php" class="btn-preview">CANCEL</a>
+        </div>
+        <div class="section-content">
+            <form action="/admin/categories.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="old_name" value="<?php echo s($edit_hub['name']); ?>">
+                <div class="form-group">
+                    <label>Update Hub Name</label>
+                    <input type="text" name="category" value="<?php echo s($edit_hub['name']); ?>" required>
+                </div>
+                <div class="form-group">
+                    <label>Replace Hub Image</label>
+                    <?php if ($edit_hub['image']): ?>
+                        <div style="margin-bottom: 10px;"><img src="<?php echo s($edit_hub['image']); ?>" style="height: 50px;"></div>
+                    <?php endif; ?>
+                    <input type="file" name="hub_image" accept="image/*" style="padding: 10px; background: #fff; border: 1px solid #ddd; width: 100%;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Update Logo Hub</button>
+            </form>
+        </div>
+    </section>
+    <?php else: ?>
     <section class="section" style="max-width: 600px; margin-bottom: 40px;">
         <div class="section-header">
             <h2><i class="fas fa-plus"></i> Add New Brand Logo Hub</h2>
@@ -128,6 +202,7 @@ $csrf_token = generate_csrf_token();
 
             <form action="/admin/categories.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <input type="hidden" name="action" value="create">
                 <div class="form-group">
                     <label>Hub Display Name</label>
                     <input type="text" name="category" placeholder="e.g. Discord, Slack, Pinterest" required>
@@ -141,6 +216,7 @@ $csrf_token = generate_csrf_token();
             </form>
         </div>
     </section>
+    <?php endif; ?>
 
     <section class="section">
         <div class="section-header">
@@ -182,7 +258,15 @@ $csrf_token = generate_csrf_token();
                             <input type="text" value="hub.php?cat=<?php echo s($cat_clean); ?>" readonly style="font-family: monospace;">
                         </div>
                         <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-                             <span class="badge badge-success">ACTIVE</span>
+                             <div>
+                                <a href="?edit=<?php echo urlencode($cat_name); ?>" class="btn-preview" style="margin-right: 5px;"><i class="fas fa-edit"></i> EDIT</a>
+                                <form method="POST" style="display: inline;" onsubmit="return confirm('Delete this hub? This cannot be undone.');">
+                                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="hub_name" value="<?php echo s($cat_name); ?>">
+                                    <button type="submit" class="btn-preview" style="color: var(--danger); border-color: var(--danger); background: transparent; cursor: pointer;"><i class="fas fa-trash"></i> DEL</button>
+                                </form>
+                             </div>
                              <i class="<?php echo $icon_class; ?>" style="color: var(--gray);"></i>
                         </div>
                     </div>
