@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/config.php';
 $error = '';
 $signup_success = isset($_GET['signup']) && $_GET['signup'] === 'success';
 
@@ -38,7 +38,7 @@ $csrf_token = generate_csrf_token();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-shadow | Social Link Hub & Analytics</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -79,7 +79,7 @@ $csrf_token = generate_csrf_token();
                         <a href="logout.php" class="btn" style="width: 100%; background: #eee; color: #333;">Sign Out</a>
                     </div>
                 <?php else: ?>
-                    <form action="index.php" method="POST">
+                    <form action="/index.php" method="POST">
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                         <div class="form-group">
                             <label>Username</label>
@@ -126,7 +126,7 @@ $csrf_token = generate_csrf_token();
     <div style="margin-bottom: 20px;">
         <a href="terms.php" style="color: var(--primary); text-decoration: none; margin: 0 10px;">Terms of Service</a>
         <a href="privacy.php" style="color: var(--primary); text-decoration: none; margin: 0 10px;">Privacy Policy</a>
-        <a href="admin.php" style="color: var(--primary); text-decoration: none; margin: 0 10px;">Admin Portal</a>
+        <a href="/admin/login.php" style="color: var(--primary); text-decoration: none; margin: 0 10px;">Admin Portal</a>
     </div>
     <p>&copy; 2010-2025 U-Shadow. All rights reserved. Developed by K24KDX</p>
 </footer>

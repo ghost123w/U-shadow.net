@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config.php';
 if (!isset($_SESSION['user']) || !($_SESSION['user']['is_admin'] ?? false)) {
-    header('Location: index.php');
+    header('Location: /admin/login.php');
     exit;
 }
 
@@ -27,7 +27,7 @@ foreach ($analytics as $click) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-shadow | Admin Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="dashboard-body">
@@ -35,10 +35,10 @@ foreach ($analytics as $click) {
 <div class="sidebar">
     <div class="sidebar-brand">U-SHADOW</div>
     <ul class="sidebar-menu">
-        <li class="active"><a href="admin_dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-        <li><a href="admin_users.php"><i class="fas fa-users"></i> User Management</a></li>
-        <li><a href="admin_categories.php"><i class="fas fa-plus-circle"></i> Manage Hubs</a></li>
-        <li style="margin-top: 100px;"><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
+        <li class="active"><a href="/admin/index.php"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li><a href="/admin/users.php"><i class="fas fa-users"></i> User Management</a></li>
+        <li><a href="/admin/categories.php"><i class="fas fa-plus-circle"></i> Manage Hubs</a></li>
+        <li style="margin-top: 100px;"><a href="/logout.php"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
     </ul>
 </div>
 
@@ -97,7 +97,7 @@ foreach ($analytics as $click) {
                         <td><span class="badge badge-success">ACTIVE</span></td>
                         <td><?php echo ($user['is_admin'] ?? false) ? 'Admin' : 'User'; ?></td>
                         <td>
-                            <a href="admin_users.php" class="btn-preview">MANAGE</a>
+                            <a href="/admin/users.php" class="btn-preview">MANAGE</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

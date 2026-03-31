@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($authenticated) {
-        header('Location: admin_dashboard.php');
+        header('Location: /admin/index.php');
         exit;
     } else {
         $error = 'Invalid admin credentials';
@@ -38,7 +38,7 @@ $csrf_token = generate_csrf_token();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-shadow | Admin Portal</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="auth-body">
@@ -67,7 +67,7 @@ $csrf_token = generate_csrf_token();
         </form>
     </div>
     <div class="auth-footer">
-        <a href="index.php"><i class="fas fa-arrow-left"></i> Return to Main Site</a>
+        <a href="/index.php"><i class="fas fa-arrow-left"></i> Return to Main Site</a>
     </div>
 </div>
 

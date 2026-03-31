@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/config.php';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -44,7 +44,7 @@ $csrf_token = generate_csrf_token();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-shadow | Create Account</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="auth-body">
@@ -59,7 +59,7 @@ $csrf_token = generate_csrf_token();
             <div class="status-badge error" style="display: block; margin-bottom: 20px; text-align: center;"><?php echo s($error); ?></div>
         <?php endif; ?>
 
-        <form action="signup.php" method="POST">
+        <form action="/signup.php" method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <div class="form-group">
                 <label>Username</label>
@@ -77,7 +77,7 @@ $csrf_token = generate_csrf_token();
         </form>
     </div>
     <div class="auth-footer">
-        Already have an account? <a href="index.php">Sign In</a>
+        Already have an account? <a href="/index.php">Sign In</a>
     </div>
 </div>
 

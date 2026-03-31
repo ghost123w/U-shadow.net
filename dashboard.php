@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/config.php';
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
@@ -27,7 +27,7 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-shadow | Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -40,9 +40,9 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
             <li><a href="#hubs"><i class="fa-solid fa-link"></i> <span>Integration Hubs</span></a></li>
             <li><a href="#analytics"><i class="fa-solid fa-chart-line"></i> <span>Analytics</span></a></li>
             <?php if (isset($user['is_admin']) && $user['is_admin']): ?>
-                <li><a href="admin_dashboard.php"><i class="fa-solid fa-shield-halved"></i> <span>Admin Access</span></a></li>
+                <li><a href="/admin/index.php"><i class="fa-solid fa-shield-halved"></i> <span>Admin Access</span></a></li>
             <?php endif; ?>
-            <li style="margin-top: 100px;"><a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i> <span>Sign Out</span></a></li>
+            <li style="margin-top: 100px;"><a href="/logout.php"><i class="fa-solid fa-right-from-bracket"></i> <span>Sign Out</span></a></li>
         </ul>
     </aside>
 
