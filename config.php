@@ -4,6 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 define('DATA_DIR', __DIR__ . '/data/');
+define('UPLOADS_DIR', __DIR__ . '/uploads/');
 define('USERS_FILE', DATA_DIR . 'users.json');
 define('CATEGORIES_FILE', DATA_DIR . 'categories.json');
 define('ANALYTICS_FILE', DATA_DIR . 'analytics.json');
@@ -42,6 +43,9 @@ function s($data) {
 // Ensure data files exist with proper permissions
 if (!is_dir(DATA_DIR)) {
     mkdir(DATA_DIR, 0700, true);
+}
+if (!is_dir(UPLOADS_DIR)) {
+    mkdir(UPLOADS_DIR, 0755, true);
 }
 
 $data_files = [USERS_FILE, CATEGORIES_FILE, ANALYTICS_FILE];

@@ -13,24 +13,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('Invalid CSRF token');
     }
 
-    $new_cat = trim($_POST['category'] ?? '');
+    $new_cat_name = trim($_POST['category'] ?? '');
 
     // Validate: only alphanumeric and space (for display), and not empty
-    if ($new_cat && preg_match('/^[a-zA-Z0-9 ]+$/', $new_cat)) {
+    if ($new_cat_name && preg_match('/^[a-zA-Z0-9 ]+$/', $new_cat_name)) {
         $categories = json_decode(file_get_contents(CATEGORIES_FILE), true);
-        if (!in_array($new_cat, $categories)) {
-            $categories[] = $new_cat;
-            file_put_contents(CATEGORIES_FILE, json_encode($categories));
-            $success = "Link Hub for '$new_cat' added successfully!";
+
+        $exists = false;
+        foreach ($categories as $cat) {
+            $c_name = is_array($cat) ? ($cat['name'] ?? '') : $cat;
+            if (strcasecmp($c_name, $new_cat_name) === 0) {
+                $exists = true;
+                break;
+            }
+        }
+
+        if (!$exists) {
+            $image_path = '';
+            if (isset($_FILES['hub_image']) && $_FILES['hub_image']['error'] === UPLOAD_ERR_OK) {
+                $file_tmp = $_FILES['hub_image']['tmp_name'];
+                $file_name = $_FILES['hub_image']['name'];
+                $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+                $allowed_exts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+                if (in_array($file_ext, $allowed_exts)) {
+                    $new_file_name = uniqid('hub_', true) . '.' . $file_ext;
+                    if (move_uploaded_file($file_tmp, UPLOADS_DIR . $new_file_name)) {
+                        $image_path = '/uploads/' . $new_file_name;
+                    } else {
+                        $error = "Failed to move uploaded file.";
+                    }
+                } else {
+                    $error = "Invalid file type. Allowed: " . implode(', ', $allowed_exts);
+                }
+            }
+
+            if (!$error) {
+                $categories[] = [
+                    'name' => $new_cat_name,
+                    'image' => $image_path
+                ];
+                file_put_contents(CATEGORIES_FILE, json_encode($categories));
+                $success = "Link Hub for '$new_cat_name' added successfully!";
+            }
         } else {
             $error = "Hub already exists.";
         }
-    } else if ($new_cat) {
+    } else if ($new_cat_name) {
         $error = "Invalid characters in hub name. Use letters and numbers only.";
     }
 }
 
-$categories = json_decode(file_get_contents(CATEGORIES_FILE), true);
+$categories_raw = json_decode(file_get_contents(CATEGORIES_FILE), true);
+$categories = [];
+foreach ($categories_raw as $cat) {
+    if (is_array($cat)) {
+        $categories[] = $cat;
+    } else {
+        $categories[] = ['name' => $cat, 'image' => ''];
+    }
+}
 $csrf_token = generate_csrf_token();
 ?>
 <!DOCTYPE html>
@@ -84,11 +126,16 @@ $csrf_token = generate_csrf_token();
                 <div class="status-badge error" style="display: block; margin-bottom: 20px; text-align: center;"><?php echo s($error); ?></div>
             <?php endif; ?>
 
-            <form action="/admin/categories.php" method="POST">
+            <form action="/admin/categories.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                 <div class="form-group">
                     <label>Hub Display Name</label>
                     <input type="text" name="category" placeholder="e.g. Discord, Slack, Pinterest" required>
+                </div>
+                <div class="form-group">
+                    <label>Hub Image (Icon/Logo)</label>
+                    <input type="file" name="hub_image" accept="image/*" style="padding: 10px; background: #fff; border: 1px solid #ddd; width: 100%;">
+                    <small style="color: var(--gray); display: block; margin-top: 5px;">Optional. Recommended square image.</small>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Create Integration Hub</button>
             </form>
@@ -117,13 +164,20 @@ $csrf_token = generate_csrf_token();
                     'spotify' => 'fa-brands fa-spotify'
                 ];
                 foreach ($categories as $cat):
-                    $cat_clean = str_replace(' ', '', strtolower($cat));
+                    $cat_name = $cat['name'];
+                    $cat_image = $cat['image'];
+                    $cat_clean = str_replace(' ', '', strtolower($cat_name));
                     $icon_class = $icons[$cat_clean] ?? 'fa-solid fa-link';
                 ?>
                     <div class="link-item" style="border-left: 4px solid var(--primary); padding: 15px;">
-                        <div style="font-weight: 700; font-size: 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; height: 50px; background: #f0f4f8; border-radius: 8px;">
-                            <?php echo s($cat); ?>
+                        <div style="font-weight: 700; font-size: 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; height: 100px; background: #f0f4f8; border-radius: 8px; overflow: hidden;">
+                            <?php if ($cat_image): ?>
+                                <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($cat_name); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                            <?php else: ?>
+                                <i class="<?php echo $icon_class; ?>" style="font-size: 40px; color: var(--primary);"></i>
+                            <?php endif; ?>
                         </div>
+                        <div style="text-align: center; font-weight: bold; margin-bottom: 10px;"><?php echo s($cat_name); ?></div>
                         <div class="copy-box" style="margin-top: 10px;">
                             <input type="text" value="hub.php?cat=<?php echo s($cat_clean); ?>" readonly style="font-family: monospace;">
                         </div>

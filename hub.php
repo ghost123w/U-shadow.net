@@ -7,10 +7,13 @@ $user = trim($_GET['user'] ?? 'anonymous');
 // Basic validation for category
 $categories = json_decode(file_get_contents(CATEGORIES_FILE), true);
 $cat_found = false;
+$cat_image = '';
 foreach ($categories as $cat) {
-    if (strcasecmp(str_replace(' ', '', $cat), $category) === 0) {
+    $c_name = is_array($cat) ? ($cat['name'] ?? '') : $cat;
+    if (strcasecmp(str_replace(' ', '', $c_name), $category) === 0) {
         $cat_found = true;
-        $display_cat = $cat;
+        $display_cat = $c_name;
+        $cat_image = is_array($cat) ? ($cat['image'] ?? '') : '';
         break;
     }
 }
@@ -70,8 +73,12 @@ $redirect_url = "https://www.google.com/search?q=" . urlencode($display_cat);
 </head>
 <body>
     <div class="card">
-        <div class="logo-circle">
-            <i class="<?php echo $icon; ?>"></i>
+        <div class="logo-circle" style="<?php echo $cat_image ? 'background: transparent;' : ''; ?>">
+            <?php if ($cat_image): ?>
+                <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($display_cat); ?>" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px;">
+            <?php else: ?>
+                <i class="<?php echo $icon; ?>"></i>
+            <?php endif; ?>
         </div>
         <h1><?php echo s($display_cat); ?> Hub</h1>
         <p>You are connecting to a professional hub managed by <strong><?php echo s($user); ?></strong>. Your visit is being tracked for performance optimization.</p>

@@ -11,7 +11,15 @@ $user_analytics = array_filter($analytics_data, function($v) use ($user) {
     return $v['user_id'] === $user['username'];
 });
 $clicks_count = count($user_analytics);
-$categories = json_decode(file_get_contents(CATEGORIES_FILE), true);
+$categories_raw = json_decode(file_get_contents(CATEGORIES_FILE), true);
+$categories = [];
+foreach ($categories_raw as $cat) {
+    if (is_array($cat)) {
+        $categories[] = $cat;
+    } else {
+        $categories[] = ['name' => $cat, 'image' => ''];
+    }
+}
 
 // Group analytics by category for stats
 $cat_stats = [];
@@ -79,14 +87,20 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
                         'spotify' => 'fa-brands fa-spotify'
                     ];
                     foreach ($categories as $cat):
-                        $cat_clean = str_replace(' ', '', strtolower($cat));
+                        $cat_name = $cat['name'];
+                        $cat_image = $cat['image'];
+                        $cat_clean = str_replace(' ', '', strtolower($cat_name));
                         $icon_class = $icons[$cat_clean] ?? 'fa-solid fa-link';
                         $generated_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/hub.php?cat=" . $cat_clean . "&user=" . urlencode($user['username']);
                     ?>
                         <div class="link-item" style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 10px;">
                             <div class="platform" style="margin-bottom: 5px; display: flex; align-items: center; gap: 10px;">
-                                <i class="<?php echo $icon_class; ?>" style="font-size: 20px; color: var(--primary);"></i>
-                                <span style="font-size: 18px; font-weight: bold;"><?php echo s($cat); ?></span>
+                                <?php if ($cat_image): ?>
+                                    <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($cat_name); ?>" style="width: 24px; height: 24px; object-fit: contain;">
+                                <?php else: ?>
+                                    <i class="<?php echo $icon_class; ?>" style="font-size: 20px; color: var(--primary);"></i>
+                                <?php endif; ?>
+                                <span style="font-size: 18px; font-weight: bold;"><?php echo s($cat_name); ?></span>
                             </div>
                             <div class="copy-box" style="border-radius: 4px; border: 1px solid #999;">
                                 <input type="text" value="<?php echo s($generated_link); ?>" id="link-<?php echo $cat_clean; ?>" readonly style="font-size: 11px;">
