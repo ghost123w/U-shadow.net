@@ -144,14 +144,15 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
                         $generated_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/hub.php?cat=" . $cat_clean . "&user=" . urlencode($user['username']);
                     ?>
                         <div class="link-item" style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 10px;">
-                            <div class="platform" style="margin-bottom: 5px;">
+                            <div class="platform" style="margin-bottom: 5px; display: flex; align-items: center; gap: 10px;">
+                                <i class="<?php echo $icon_class; ?>" style="font-size: 20px; color: var(--primary);"></i>
                                 <span style="font-size: 18px; font-weight: bold;"><?php echo s($cat); ?></span>
                             </div>
                             <div class="copy-box" style="border-radius: 4px; border: 1px solid #999;">
                                 <input type="text" value="<?php echo s($generated_link); ?>" id="link-<?php echo $cat_clean; ?>" readonly style="font-size: 11px;">
                             </div>
-                            <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                                <button onclick="copyLink('link-<?php echo $cat_clean; ?>')" class="btn-preview" style="background: #f0f0f0; border: 1px solid #999; color: #333; padding: 2px 8px; font-size: 11px;">Copy Link</button>
+                            <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;" id="actions-<?php echo $cat_clean; ?>">
+                                <button onclick="copyLink('link-<?php echo $cat_clean; ?>', this)" class="btn-preview" style="background: #f0f0f0; border: 1px solid #999; color: #333; padding: 2px 8px; font-size: 11px;">Copy Link</button>
                                 <div style="font-size: 10px; color: var(--gray);">
                                     <span>Clicks: <?php echo $cat_stats[$cat_clean] ?? 0; ?></span>
                                 </div>
@@ -166,23 +167,26 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
     <footer>
         &copy; 2010-2025 | <strong>U-SHADOW Professional v3.5</strong> | All Rights Reserved. <br>
         <a href="terms.php" style="color: #888; text-decoration: none;">Terms of Service</a> |
-        <a href="privacy.php" style="color: #888; text-decoration: none;">Privacy Policy</a>
+        <a href="privacy.php" style="color: #888; text-decoration: none;">Privacy Policy</a> |
+        <a href="/admin/login.php" style="color: #888; text-decoration: none;"><i class="fas fa-lock"></i> Admin Portal</a>
     </footer>
 
     <script>
-        function copyLink(id) {
+        function copyLink(id, btn) {
             var copyText = document.getElementById(id);
             copyText.select();
             copyText.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(copyText.value);
 
-            var btn = copyText.nextElementSibling;
             var originalText = btn.innerHTML;
+            var originalBg = btn.style.background;
             btn.innerHTML = "DONE!";
             btn.style.background = "#10b981";
+            btn.style.color = "#fff";
             setTimeout(function() {
                 btn.innerHTML = originalText;
-                btn.style.background = "#4361ee";
+                btn.style.background = originalBg;
+                btn.style.color = "#333";
             }, 1500);
         }
     </script>
