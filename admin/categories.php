@@ -103,7 +103,7 @@ $csrf_token = generate_csrf_token();
 
     <div class="top-bar">
         <div class="page-title">
-            <h1>Manage Integration Hubs</h1>
+            <h1>LOGO HUB MANAGEMENT</h1>
         </div>
         <div class="user-profile">
             <div class="user-info">
@@ -116,7 +116,7 @@ $csrf_token = generate_csrf_token();
 
     <section class="section" style="max-width: 600px; margin-bottom: 40px;">
         <div class="section-header">
-            <h2><i class="fas fa-plus"></i> Add New Integration Hub</h2>
+            <h2><i class="fas fa-plus"></i> Add New Brand Logo Hub</h2>
         </div>
         <div class="section-content">
             <?php if ($success): ?>
@@ -137,14 +137,14 @@ $csrf_token = generate_csrf_token();
                     <input type="file" name="hub_image" accept="image/*" style="padding: 10px; background: #fff; border: 1px solid #ddd; width: 100%;">
                     <small style="color: var(--gray); display: block; margin-top: 5px;">Optional. Recommended square image.</small>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Integration Hub</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Logo Hub</button>
             </form>
         </div>
     </section>
 
     <section class="section">
         <div class="section-header">
-            <h2><i class="fas fa-th-large"></i> Existing Integration Hubs</h2>
+            <h2><i class="fas fa-th-large"></i> Active Logo Hubs</h2>
         </div>
         <div class="section-content">
             <div class="link-grid">

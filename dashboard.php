@@ -63,8 +63,8 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
 
         <section class="section">
             <div class="section-header" style="display: block; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px;">
-                <h2 style="font-size: 28px; color: var(--dark);">Dynamic Link Grid</h2>
-                <p style="font-size: 16px; color: var(--gray);">Select a category below to generate your personalized tracking link.</p>
+                <h2 style="font-size: 28px; color: var(--dark);">LOGO HUB</h2>
+                <p style="font-size: 16px; color: var(--gray);">Select a professional brand hub to generate your personalized tracking link.</p>
             </div>
             <div class="section-content">
                 <div class="link-grid">
@@ -93,14 +93,16 @@ $top_hub = empty($cat_stats) ? 'N/A' : array_keys($cat_stats, max($cat_stats))[0
                         $icon_class = $icons[$cat_clean] ?? 'fa-solid fa-link';
                         $generated_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/hub.php?cat=" . $cat_clean . "&user=" . urlencode($user['username']);
                     ?>
-                        <div class="link-item" style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 10px;">
-                            <div class="platform" style="margin-bottom: 5px; display: flex; align-items: center; gap: 10px;">
-                                <?php if ($cat_image): ?>
-                                    <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($cat_name); ?>" style="width: 24px; height: 24px; object-fit: contain;">
-                                <?php else: ?>
-                                    <i class="<?php echo $icon_class; ?>" style="font-size: 20px; color: var(--primary);"></i>
-                                <?php endif; ?>
-                                <span style="font-size: 18px; font-weight: bold;"><?php echo s($cat_name); ?></span>
+                        <div class="link-item" style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px;">
+                            <div class="platform" style="margin-bottom: 20px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <div style="width: 100px; height: 100px; background: #f8fafc; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border: 1px solid #f1f5f9; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                                    <?php if ($cat_image): ?>
+                                        <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($cat_name); ?>" style="width: 80%; height: 80%; object-fit: contain;">
+                                    <?php else: ?>
+                                        <i class="<?php echo $icon_class; ?>" style="font-size: 40px; color: var(--primary);"></i>
+                                    <?php endif; ?>
+                                </div>
+                                <span style="font-size: 20px; font-weight: 800; color: #1e293b; letter-spacing: -0.5px;"><?php echo s($cat_name); ?></span>
                             </div>
                             <div class="copy-box" style="border-radius: 4px; border: 1px solid #999;">
                                 <input type="text" value="<?php echo s($generated_link); ?>" id="link-<?php echo $cat_clean; ?>" readonly style="font-size: 11px;">

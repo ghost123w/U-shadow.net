@@ -57,7 +57,7 @@ $redirect_url = "https://www.google.com/search?q=" . urlencode($display_cat);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>U-SHADOW | <?php echo s($display_cat); ?> Integration Hub</title>
+    <title>U-SHADOW | <?php echo s($display_cat); ?> Logo Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Inter', sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
