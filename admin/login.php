@@ -4,13 +4,6 @@ $error = '';
 $success = '';
 
 $users = json_decode(file_get_contents(USERS_FILE), true);
-$has_admin = false;
-foreach ($users as $user) {
-    if ($user['is_admin'] ?? false) {
-        $has_admin = true;
-        break;
-    }
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
@@ -20,38 +13,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    if (!$has_admin) {
-        // Register the first admin
-        if (strlen($password) < 6) {
-            $error = 'Password must be at least 6 characters.';
-        } else {
-            $new_admin = [
-                'username' => $username,
-                'password' => password_hash($password, PASSWORD_DEFAULT),
-                'is_admin' => true
-            ];
-            $users[] = $new_admin;
-            file_put_contents(USERS_FILE, json_encode($users));
-            $success = "Administrator '$username' created successfully! You can now login.";
-            $has_admin = true; // Reload state
+    // Normal Admin Login Only
+    $authenticated = false;
+    foreach ($users as $user) {
+        if ($user['username'] === $username && ($user['is_admin'] ?? false) && password_verify($password, $user['password'])) {
+            $_SESSION['user'] = $user;
+            $authenticated = true;
+            break;
         }
-    } else {
-        // Normal Admin Login
-        $authenticated = false;
-        foreach ($users as $user) {
-            if ($user['username'] === $username && ($user['is_admin'] ?? false) && password_verify($password, $user['password'])) {
-                $_SESSION['user'] = $user;
-                $authenticated = true;
-                break;
-            }
-        }
+    }
 
-        if ($authenticated) {
-            header('Location: /admin/index.php');
-            exit;
-        } else {
-            $error = 'Invalid admin credentials';
-        }
+    if ($authenticated) {
+        header('Location: /admin/index.php');
+        exit;
+    } else {
+        $error = 'Invalid admin credentials';
     }
 }
 
@@ -71,11 +47,7 @@ $csrf_token = generate_csrf_token();
 <div class="auth-card">
     <div class="auth-header">
         <h1>Admin Portal</h1>
-        <?php if (!$has_admin): ?>
-            <p style="color: var(--primary); font-weight: 700;"><i class="fas fa-tools"></i> Installation: Setup First Administrator Account</p>
-        <?php else: ?>
-            <p>Restricted Access Area</p>
-        <?php endif; ?>
+        <p>Restricted Access Area</p>
     </div>
     <div class="auth-content">
         <?php if ($error): ?>
@@ -88,19 +60,20 @@ $csrf_token = generate_csrf_token();
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <div class="form-group">
-                <label><?php echo !$has_admin ? 'Create Admin Username' : 'Admin Username'; ?></label>
+                <label>Admin Username</label>
                 <input type="text" name="username" placeholder="Username" required>
             </div>
             <div class="form-group">
-                <label><?php echo !$has_admin ? 'Create Admin Password' : 'Admin Password'; ?></label>
+                <label>Admin Password</label>
                 <input type="password" name="password" placeholder="Password" required>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">
-                <?php echo !$has_admin ? 'Setup Admin Account' : 'Access Control'; ?>
-            </button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">Access Control</button>
         </form>
     </div>
     <div class="auth-footer">
+        <div style="margin-bottom: 10px;">
+            <a href="reset.php" style="color: var(--gray); font-size: 13px;">Forgot Password?</a>
+        </div>
         <a href="/index.php"><i class="fas fa-arrow-left"></i> Return to Main Site</a>
     </div>
 </div>

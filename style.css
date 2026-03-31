@@ -260,6 +260,46 @@ body {
     margin-bottom: 10px;
 }
 
+.hub-logo-tiny {
+    max-width: 24px;
+    height: 24px;
+    object-fit: contain;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.link-list-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.link-row-old {
+    display: flex;
+    align-items: center;
+    border: 1px solid #eee;
+    padding: 10px 15px;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.link-row-link {
+    flex: 2;
+    margin-right: 20px;
+}
+
+.link-row-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.link-row-clicks {
+    width: 100px;
+    text-align: right;
+}
+
 .copy-container-old {
     display: flex;
     margin: 10px 0;

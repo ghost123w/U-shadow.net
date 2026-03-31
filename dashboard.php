@@ -79,7 +79,7 @@ foreach ($user_analytics as $click) {
             <div class="panel-header-old">Generate Links</div>
             <div class="panel-body-old">
                 <p>Select a category to generate your pitching link:</p>
-                <div class="link-grid-old">
+                <div class="link-list-vertical">
                     <?php
                     $icons = [
                         'facebook' => 'fa-brands fa-facebook',
@@ -105,19 +105,23 @@ foreach ($user_analytics as $click) {
                         $icon_class = $icons[$cat_clean] ?? 'fa-solid fa-link';
                         $generated_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/hub.php?cat=" . $cat_clean . "&user=" . urlencode($user['username']);
                     ?>
-                        <div class="link-box-old">
-                            <div class="link-box-header"><?php echo s($cat_name); ?></div>
-                            <div class="link-box-body">
-                                <?php if ($cat_image): ?>
-                                    <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($cat_name); ?>" class="hub-logo-small">
-                                <?php else: ?>
-                                    <i class="<?php echo $icon_class; ?>"></i>
-                                <?php endif; ?>
-                                <div class="copy-container-old">
+                        <div class="link-row-old">
+                            <div class="link-row-link">
+                                <div class="copy-container-old" style="margin: 0;">
                                     <input type="text" value="<?php echo s($generated_link); ?>" id="link-<?php echo $cat_clean; ?>" readonly>
                                     <button onclick="copyLink('link-<?php echo $cat_clean; ?>', this)">Copy</button>
                                 </div>
-                                <div class="click-count">Clicks: <?php echo $cat_stats[$cat_clean] ?? 0; ?></div>
+                            </div>
+                            <div class="link-row-info">
+                                <?php if ($cat_image): ?>
+                                    <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($cat_name); ?>" class="hub-logo-tiny">
+                                <?php else: ?>
+                                    <i class="<?php echo $icon_class; ?>" style="font-size: 16px; margin-right: 8px;"></i>
+                                <?php endif; ?>
+                                <strong><?php echo s($cat_name); ?></strong>
+                            </div>
+                            <div class="link-row-clicks">
+                                <span class="badge" style="background: #eee; color: #666;">Clicks: <?php echo $cat_stats[$cat_clean] ?? 0; ?></span>
                             </div>
                         </div>
                     <?php endforeach; ?>

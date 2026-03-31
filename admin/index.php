@@ -38,6 +38,7 @@ foreach ($analytics as $click) {
         <li class="active"><a href="/admin/index.php"><i class="fas fa-chart-line"></i> Dashboard</a></li>
         <li><a href="/admin/users.php"><i class="fas fa-users"></i> User Management</a></li>
         <li><a href="/admin/categories.php"><i class="fas fa-plus-circle"></i> Manage Hubs</a></li>
+        <li><a href="/admin/password.php"><i class="fas fa-key"></i> Security</a></li>
         <li style="margin-top: 100px;"><a href="/logout.php"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
     </ul>
 </div>
