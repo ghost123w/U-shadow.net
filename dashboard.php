@@ -134,7 +134,7 @@ foreach ($user_analytics as $click) {
     </main>
 
     <footer class="footer-old">
-        Copyright 2010-2025 | This Website Is Devlopped By K24KDX <br>
+        Copyright 2010-2025 | This Website Is Developed By K24KDX <br>
         <strong>U-SHADOW v3.5 &copy;</strong>
     </footer>
 </div>

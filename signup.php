@@ -87,5 +87,16 @@ $csrf_token = generate_csrf_token();
     </div>
 </div>
 
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    var password = document.getElementById('password').value;
+    var confirm = document.getElementById('confirm_password').value;
+    if (password !== confirm) {
+        e.preventDefault();
+        alert('Passwords do not match!');
+    }
+});
+</script>
+
 </body>
 </html>

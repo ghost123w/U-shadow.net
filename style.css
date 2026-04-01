@@ -130,6 +130,35 @@ body {
     padding: 20px;
     background: #fff;
     min-height: 100vh;
+    position: relative;
+}
+
+.old-index-body, .old-dashboard-body {
+    background-color: #e9ebee;
+    margin: 0;
+    padding: 0;
+}
+
+.header-old-index {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 2px solid #333;
+    margin-bottom: 20px;
+}
+
+.header-old {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.main-old {
+    padding: 20px 0;
 }
 
 .brand-top {
@@ -338,19 +367,24 @@ body {
 
 .smikta-logo-corner {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 40px;
+    z-index: 10;
 }
 
 .logo-diamond {
     background: #333;
     color: #fff;
-    padding: 15px;
-    font-weight: 700;
-    font-size: 14px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 11px;
     transform: rotate(45deg);
-    display: inline-block;
     border: 3px solid #eee;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 .split-layout-old {
