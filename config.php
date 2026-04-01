@@ -11,7 +11,6 @@ define('ANALYTICS_FILE', DATA_DIR . 'analytics.json');
 
 // Admin Settings - Change these for production
 define('ADMIN_RESET_TOKEN', 'u-shadow-admin-reset-2025');
-define('ADMIN_EMAIL', 'admin@u-shadow.com');
 
 // Security Headers
 header("X-Frame-Options: SAMEORIGIN");
