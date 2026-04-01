@@ -14,10 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $username = trim($_POST['username'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
 
-    if ($password !== $confirm_password) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Invalid email address';
+    } elseif ($password !== $confirm_password) {
         $error = 'Passwords do not match';
     } else {
         $users = json_decode(file_get_contents(USERS_FILE), true);
@@ -25,16 +28,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         foreach ($users as $user) {
             if ($user['username'] === $username) {
-                $exists = true;
+                $exists = 'Username already exists';
+                break;
+            }
+            if (($user['email'] ?? '') === $email) {
+                $exists = 'Email already registered';
                 break;
             }
         }
 
         if ($exists) {
-            $error = 'Username already exists';
+            $error = $exists;
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $users[] = ['username' => $username, 'password' => $hashed_password, 'is_admin' => false];
+            $users[] = [
+                'username' => $username,
+                'email' => $email,
+                'password' => $hashed_password,
+                'is_admin' => false
+            ];
             file_put_contents(USERS_FILE, json_encode($users));
             header('Location: index.php?signup=success');
             exit;
@@ -50,6 +62,7 @@ $csrf_token = generate_csrf_token();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-shadow | Create Account</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 5 L95 50 L50 95 L5 50 Z%22 fill=%22%23333%22 stroke=%22%23eee%22 stroke-width=%225%22/><text x=%2250%22 y=%2265%22 font-size=%2240%22 font-weight=%22bold%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22Arial%22>U</text></svg>">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -70,6 +83,10 @@ $csrf_token = generate_csrf_token();
             <div class="form-group">
                 <label>Username</label>
                 <input type="text" name="username" placeholder="Choose a username" required>
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label>Password</label>

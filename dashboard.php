@@ -34,6 +34,7 @@ foreach ($user_analytics as $click) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U-SHADOW | Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 5 L95 50 L50 95 L5 50 Z%22 fill=%22%23333%22 stroke=%22%23eee%22 stroke-width=%225%22/><text x=%2250%22 y=%2265%22 font-size=%2240%22 font-weight=%22bold%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22Arial%22>U</text></svg>">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -52,9 +53,6 @@ foreach ($user_analytics as $click) {
     <nav class="navbar-old">
         <ul>
             <li><a href="dashboard.php"><i class="fas fa-home"></i> Home</a></li>
-            <?php if ($user['is_admin'] ?? false): ?>
-                <li><a href="/admin/index.php"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
-            <?php endif; ?>
             <li><a href="signup.php" style="display: none;"><i class="fas fa-user-plus"></i> Sign Up</a></li>
             <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>
             <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
