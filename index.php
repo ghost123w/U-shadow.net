@@ -177,6 +177,7 @@ $csrf_token = generate_csrf_token();
     </main>
 
     <footer class="footer-old">
+        Contact Admin: <a href="mailto:<?php echo ADMIN_EMAIL; ?>" style="color: #c0392b; font-weight: 700;"><?php echo ADMIN_EMAIL; ?></a><br>
         Copyright 2010-2025 | This Website Is Devlopped By K24KDX <br>
         <strong>U-SHADOW v3.5 &copy;</strong>
     </footer>
