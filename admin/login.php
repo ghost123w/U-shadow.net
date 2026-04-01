@@ -66,8 +66,11 @@ $csrf_token = generate_csrf_token();
 
 <div class="auth-card">
     <div class="auth-header">
-        <h1>Admin Portal</h1>
-        <p><?php echo $admin_exists ? 'Restricted Access Area' : 'System Installation: Create Admin'; ?></p>
+        <?php if (!$admin_exists): ?>
+            <div style="background: #4361ee; color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Wizard</div>
+        <?php endif; ?>
+        <h1><?php echo $admin_exists ? 'Admin Portal' : 'Installation Wizard'; ?></h1>
+        <p><?php echo $admin_exists ? 'Restricted Access Area' : 'Welcome to U-shadow. Please create your primary administrator account to begin.'; ?></p>
     </div>
     <div class="auth-content">
         <?php if ($error): ?>
@@ -88,7 +91,7 @@ $csrf_token = generate_csrf_token();
                 <input type="password" name="password" placeholder="Password" required>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">
-                <?php echo $admin_exists ? 'Access Control' : 'Initialize Platform'; ?>
+                <?php echo $admin_exists ? 'Access Control' : 'Complete Installation'; ?>
             </button>
         </form>
     </div>
