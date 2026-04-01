@@ -6,11 +6,6 @@ if (!isset($_SESSION['user'])) {
 }
 $user = $_SESSION['user'];
 
-$analytics_data = json_decode(file_get_contents(ANALYTICS_FILE), true);
-$user_analytics = array_filter($analytics_data, function($v) use ($user) {
-    return $v['user_id'] === $user['username'];
-});
-$clicks_count = count($user_analytics);
 $categories_raw = json_decode(file_get_contents(CATEGORIES_FILE), true);
 $categories = [];
 foreach ($categories_raw as $cat) {
@@ -21,12 +16,6 @@ foreach ($categories_raw as $cat) {
     }
 }
 
-// Group analytics by category for stats
-$cat_stats = [];
-foreach ($user_analytics as $click) {
-    $cat = $click['category'];
-    $cat_stats[$cat] = ($cat_stats[$cat] ?? 0) + 1;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,16 +54,8 @@ foreach ($user_analytics as $click) {
         <div class="breadcrumb-old">.: Dashboard :.</div>
         <div class="welcome-msg">
             Welcome back, <strong><?php echo s($user['username']); ?></strong>!<br>
-            You can now access your victims and manage your account.
+            Select a brand below to generate your unique pitching link.
         </div>
-
-        <section class="panel-old">
-            <div class="panel-header-old">Your Statistics</div>
-            <div class="panel-body-old">
-                <p>Victims: <?php echo $clicks_count; ?></p>
-                <p>Links generated: <?php echo count($categories); ?></p>
-            </div>
-        </section>
 
         <section class="panel-old">
             <div class="panel-header-old">Generate Links</div>
@@ -120,9 +101,6 @@ foreach ($user_analytics as $click) {
                                     <i class="<?php echo $icon_class; ?>" style="font-size: 16px; margin-right: 8px;"></i>
                                 <?php endif; ?>
                                 <strong><?php echo s($cat_name); ?></strong>
-                            </div>
-                            <div class="link-row-clicks">
-                                <span class="badge" style="background: #eee; color: #666;">Clicks: <?php echo $cat_stats[$cat_clean] ?? 0; ?></span>
                             </div>
                         </div>
                     <?php endforeach; ?>
