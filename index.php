@@ -110,8 +110,6 @@ $csrf_token = generate_csrf_token();
             <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="signup.php"><i class="fas fa-user-plus"></i> Sign Up</a></li>
             <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>
-            <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-            <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
         </ul>
     </nav>
 

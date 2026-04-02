@@ -52,8 +52,6 @@ foreach ($categories_raw as $cat) {
             <li><a href="victims.php"><i class="fas fa-skull"></i> My Victims</a></li>
             <li><a href="signup.php" style="display: none;"><i class="fas fa-user-plus"></i> Sign Up</a></li>
             <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>
-            <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-            <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
             <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </nav>
