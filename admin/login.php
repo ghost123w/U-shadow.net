@@ -1,0 +1,108 @@
+<?php
+require_once __DIR__ . '/../config.php';
+$error = '';
+$success = '';
+
+$users = json_decode(file_get_contents(USERS_FILE), true);
+
+// Check if any admin exists
+$admin_exists = false;
+foreach ($users as $user) {
+    if ($user['is_admin'] ?? false) {
+        $admin_exists = true;
+        break;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die('Invalid CSRF token');
+    }
+
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    // Normal Admin Login Only
+    $authenticated = false;
+    foreach ($users as $user) {
+        if ($user['username'] === $username && ($user['is_admin'] ?? false) && password_verify($password, $user['password'])) {
+            $_SESSION['user'] = $user;
+            $authenticated = true;
+            break;
+        }
+    }
+
+    if ($authenticated) {
+        header('Location: /admin/index.php');
+        exit;
+    } elseif (!$admin_exists) {
+        // Auto-create first admin if none exist
+        $users[] = [
+            'username' => $username,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'is_admin' => true
+        ];
+        file_put_contents(USERS_FILE, json_encode($users));
+        $_SESSION['user'] = end($users);
+        header('Location: /admin/index.php');
+        exit;
+    } else {
+        $error = 'Invalid admin credentials';
+    }
+}
+
+$csrf_token = generate_csrf_token();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U-shadow | Admin Portal</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 5 L95 50 L50 95 L5 50 Z%22 fill=%22%23333%22 stroke=%22%23eee%22 stroke-width=%225%22/><text x=%2250%22 y=%2265%22 font-size=%2240%22 font-weight=%22bold%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22Arial%22>U</text></svg>">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-card">
+    <div class="auth-header">
+        <?php if (!$admin_exists): ?>
+            <div style="background: #4361ee; color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Wizard</div>
+        <?php endif; ?>
+        <h1><?php echo $admin_exists ? 'Admin Portal' : 'Installation Wizard'; ?></h1>
+        <p><?php echo $admin_exists ? 'Restricted Access Area' : 'Welcome to U-shadow. Please create your primary administrator account to begin.'; ?></p>
+    </div>
+    <div class="auth-content">
+        <?php if ($error): ?>
+            <div class="status-badge error" style="display: block; margin-bottom: 20px; text-align: center;"><?php echo s($error); ?></div>
+        <?php endif; ?>
+        <?php if ($success): ?>
+            <div class="status-badge success" style="display: block; margin-bottom: 20px; text-align: center;"><?php echo s($success); ?></div>
+        <?php endif; ?>
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+            <div class="form-group">
+                <label>Admin Username</label>
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <label>Admin Password</label>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">
+                <?php echo $admin_exists ? 'Access Control' : 'Complete Installation'; ?>
+            </button>
+        </form>
+    </div>
+    <div class="auth-footer">
+        <div style="margin-bottom: 10px;">
+            <a href="reset.php" style="color: var(--gray); font-size: 13px;">Forgot Password?</a>
+        </div>
+        <a href="/index.php"><i class="fas fa-arrow-left"></i> Return to Main Site</a>
+    </div>
+</div>
+
+</body>
+</html>
