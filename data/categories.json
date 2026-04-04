@@ -1,10 +1,1 @@
-[
-    {"name": "Facebook", "image": ""},
-    {"name": "Instagram", "image": ""},
-    {"name": "TikTok", "image": ""},
-    {"name": "Snapchat", "image": ""},
-    {"name": "Discord", "image": ""},
-    {"name": "Telegram", "image": ""},
-    {"name": "Twitter", "image": ""},
-    {"name": "X", "image": ""}
-]
+["Facebook", "Instagram", "TikTok", "Snapchat", "Discord", "Telegram", "Twitter", "X"]

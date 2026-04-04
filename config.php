@@ -10,14 +10,14 @@ define('CATEGORIES_FILE', DATA_DIR . 'categories.json');
 define('ANALYTICS_FILE', DATA_DIR . 'analytics.json');
 
 // Admin Settings - Change these for production
-define('ADMIN_RESET_TOKEN', 'u-shadow-admin-reset-2025');
+define('ADMIN_RESET_TOKEN', bin2hex(random_bytes(32)));
 
 // Security Headers
 header("X-Frame-Options: SAMEORIGIN");
 header("X-Content-Type-Options: nosniff");
 header("X-XSS-Protection: 1; mode=block");
-// Security Headers
-header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://cdnjs.cloudflare.com;");
+// Security Headers - Allowed external assets for Hub mimicry
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://cdnjs.cloudflare.com https://images.unsplash.com;");
 
 /**
  * Generate a CSRF token if one doesn't exist.

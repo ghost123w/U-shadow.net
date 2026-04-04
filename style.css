@@ -145,7 +145,7 @@ body {
 
 .btn-telegram {
     display: inline-block;
-    padding: 15px 40px;
+    padding: 12px 40px;
     background: linear-gradient(to bottom, #d00, #900);
     color: #fff;
     font-size: 24px;
@@ -154,6 +154,8 @@ body {
     border-radius: 50px;
     box-shadow: 0 4px 15px rgba(200, 0, 0, 0.4);
     transition: transform 0.3s;
+    border: 1px solid #000;
+    text-shadow: 0 1px 2px #000;
 }
 
 .btn-telegram:hover {
@@ -161,9 +163,10 @@ body {
 }
 
 .navbar-old {
-    background: #f8f9fa;
-    border: 1px solid #ddd;
+    background: #fff;
+    border: 1px solid #ccc;
     margin-bottom: 20px;
+    border-radius: 4px;
 }
 
 .navbar-old ul {
@@ -179,11 +182,11 @@ body {
 
 .navbar-old ul li a {
     display: block;
-    padding: 10px 15px;
+    padding: 8px 15px;
     color: #333;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .navbar-old ul li a:hover {
@@ -214,9 +217,11 @@ body {
 .panel-header-old {
     background: linear-gradient(to bottom, #555, #333);
     color: #fff;
-    padding: 10px 15px;
+    padding: 8px 15px;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13px;
+    border-bottom: 1px solid #000;
+    text-shadow: 0 1px 1px #000;
 }
 
 .panel-body-old {
@@ -339,7 +344,7 @@ body {
 .smikta-logo-corner {
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
 }
 
 .logo-diamond {
