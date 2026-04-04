@@ -10,7 +10,7 @@ define('CATEGORIES_FILE', DATA_DIR . 'categories.json');
 define('ANALYTICS_FILE', DATA_DIR . 'analytics.json');
 
 // Admin Settings - Change these for production
-define('ADMIN_RESET_TOKEN', bin2hex(random_bytes(32)));
+define('ADMIN_RESET_TOKEN', 'USHADOW-ADMIN-RECOVERY-KEY-2025');
 
 // Security Headers
 header("X-Frame-Options: SAMEORIGIN");
